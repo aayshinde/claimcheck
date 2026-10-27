@@ -1,0 +1,40 @@
+# Case criteria for a FICTIONAL environmental mass tort, used for the demo.
+# Real criteria come from the settlement agreement / court order and are maintained by the case team.
+# Rules are data, not code: an attorney can change a window or add a diagnosis without a deploy.
+id: cedar_creek
+name: In re Cedar Creek Groundwater Contamination Litigation (fictional)
+description: >
+  Residents and workers exposed to contaminated municipal water in Cedar Creek Township
+  between 1985 and 2005 who were later diagnosed with a qualifying condition.
+
+exposure:
+  location_keywords: ["cedar creek"]
+  window_start: 1985-01-01
+  window_end: 2005-12-31
+  min_days: 30
+  # self-reported addresses (intake questionnaire) are not proof of exposure
+  evidence_doc_types: [utility_record, employment_record]
+
+diagnosis:
+  # ICD-10 code prefixes
+  qualifying:
+    C64: Kidney cancer
+    C65: Kidney cancer (renal pelvis)
+    C67: Bladder cancer
+    C22: Liver cancer
+    C82: Non-Hodgkin lymphoma
+    C83: Non-Hodgkin lymphoma
+    C85: Non-Hodgkin lymphoma
+    G20: Parkinson's disease
+  evidence_doc_types: [pathology_report, specialist_note]
+  must_follow_exposure: true
+
+rules:
+  - id: exposure_location
+    label: Documented exposure in Cedar Creek during 1985–2005
+  - id: exposure_duration
+    label: At least 30 days of exposure inside the window
+  - id: qualifying_diagnosis
+    label: Qualifying diagnosis documented in a medical record
+  - id: diagnosis_after_exposure
+    label: Diagnosis made after exposure began
