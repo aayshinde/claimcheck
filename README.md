@@ -9,7 +9,12 @@ sends anything uncertain to a paralegal, and drafts the follow-up work. Attorney
 
 > All data is synthetic, and the litigation ("In re Cedar Creek Groundwater Contamination") is fictional.
 
+![ClaimCheck overview](docs/overview.png)
+
+<details><summary>Claimant file with highlighted evidence</summary>
+
 ![ClaimCheck claimant file](docs/screenshot.png)
+</details>
 
 ## What it does
 

@@ -3,7 +3,7 @@ from streamlit.testing.v1 import AppTest
 
 from claimcheck import config
 
-PAGES = ["Claimants", "Claimant file", "Review queue", "Accuracy & cost", "Integrations & audit", "About"]
+PAGES = ["Overview", "All claimants", "Claimant file", "Needs a person", "Accuracy & cost", "Behind the scenes", "About"]
 
 
 @pytest.mark.parametrize("page", PAGES)

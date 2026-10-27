@@ -15,7 +15,7 @@ import plotly.graph_objects as go
 import pymupdf
 import streamlit as st
 
-from claimcheck import config, evaluate, llm, rules, search, service
+from claimcheck import config, evaluate, llm, plain, rules, search, service
 from claimcheck.db import init_db
 from claimcheck.ingest import doc_path
 
@@ -77,11 +77,11 @@ def show_evidence(fact: dict, key: str) -> None:
 # ------------------------------------------------------------------------------------------------ sidebar
 with st.sidebar:
     st.markdown("## ⚖️ ClaimCheck")
-    st.caption("Mass tort claimant qualification with cited evidence")
+    st.caption("Checks claimant files against the case rules, with proof")
     user = st.selectbox("Signed in as", list(service.DEMO_USERS),
                         format_func=lambda u: f"{u} ({service.DEMO_USERS[u]})")
     role = service.DEMO_USERS[user]
-    views = ["Claimants", "Claimant file", "Review queue", "Accuracy & cost", "Integrations & audit", "About"]
+    views = ["Overview", "All claimants", "Claimant file", "Needs a person", "Accuracy & cost", "Behind the scenes", "About"]
     qp = st.query_params        # deep links, e.g. ?view=Claimant+file&claimant=CC-1003
     if "claimant" in qp and "claimant_ext" not in st.session_state:
         st.session_state["claimant_ext"] = qp["claimant"]
@@ -90,10 +90,11 @@ with st.sidebar:
     st.divider()
     case = rules.load_case(config.DEFAULT_CASE)
     st.caption(f"**Case:** {case['name']}")
-    st.caption(f"**Live LLM:** {config.CHAT_MODEL if llm.llm_enabled() else 'off (offline mode)'}")
-    st.caption(f"**This dataset was extracted with:** {service.extraction_provenance()}")
-    st.caption(f"**Database:** {config.DATABASE_URL.split(':')[0]}")
-    st.caption("All records are synthetic. No real patient data.")
+    st.caption("All people and records are made up. No real patient data.")
+    with st.expander("Technical details"):
+        st.caption(f"**Live LLM:** {config.CHAT_MODEL if llm.llm_enabled() else 'off (offline mode)'}")
+        st.caption(f"**This dataset was extracted with:** {service.extraction_provenance()}")
+        st.caption(f"**Database:** {config.DATABASE_URL.split(':')[0]}")
 
 summary = service.claimant_summary()
 by_ext = {c["external_id"]: c for c in summary}
@@ -107,9 +108,76 @@ def pick_claimant() -> dict:
     return by_ext[ext]
 
 
+# ------------------------------------------------------------------------------------------------ overview
+if page == "Overview":
+    st.title("⚖️ ClaimCheck")
+    st.markdown("#### Checks every claimant's records against the case rules in seconds, shows the proof, "
+                "and leaves the decision to a person.")
+    st.caption(f"Demo: {case['name']}. All people and records are made up.")
+
+    counts = pd.Series([c["status"] for c in summary]).value_counts()
+    n_q, n_r, n_n = (int(counts.get(k, 0)) for k in ("qualified", "needs_review", "not_qualified"))
+    m = st.columns(4)
+    m[0].metric("📂 Claimant files reviewed", len(summary))
+    m[1].metric("✅ Ready for attorney sign-off", n_q)
+    m[2].metric("⚠️ Need a person to check", n_r)
+    m[3].metric("❌ Don't qualify", n_n)
+    res = {r["method"]: r for r in evaluate.load_results()}
+    best = res.get("hybrid") or next(iter(res.values()), None)
+    if best:
+        st.success(f"🛡️ **{len(best['false_qualifications'])} claimants wrongly approved** in testing "
+                   f"({best['status_accuracy']:.0%} of files sorted correctly). When it isn't sure, it hands the file "
+                   "to a person instead of guessing.")
+
+    st.subheader("⏱️ Time it saves")
+    minutes = st.slider("Your estimate: minutes a paralegal spends on a first-pass review of one file", 10, 120, 45, 5)
+    secs = (best or {}).get("llm_usage", {}).get("seconds_per_claimant") or 10
+    t = st.columns(3)
+    t[0].metric(f"By hand, these {len(summary)} files", f"{len(summary) * minutes / 60:.0f} hours")
+    t[1].metric("With ClaimCheck", f"~{max(1, round(len(summary) * secs / 60))} min",
+                help="Computer time, plus a short human check of the flagged files")
+    t[2].metric("At 5,000 claimants", f"{5000 * minutes / 60:,.0f} hours",
+                help="Paralegal hours a manual first pass would take; people then focus only on the flagged files")
+
+    st.subheader("How it works")
+    steps = st.columns(4)
+    for col, (title, text) in zip(steps, [
+            ("1. 📥 Collect", "Pulls each client's records from the firm's case system automatically."),
+            ("2. 🔎 Read", "Reads every page, even scans, and finds the dates, places and diagnoses, quoting the record "
+                          "for each one."),
+            ("3. ⚖️ Check", "Applies the case rules the attorneys set. The AI finds facts; it never makes the decision."),
+            ("4. 👩‍⚖️ Approve", "Paralegals check anything uncertain, attorneys sign off, and every step is logged.")]):
+        with col.container(border=True):
+            st.markdown(f"**{title}**")
+            st.caption(text)
+
+    st.subheader("See one claimant file")
+    exts = list(by_ext)
+    pick = st.selectbox("Claimant", exts, index=exts.index("CC-1003") if "CC-1003" in exts else 0,
+                        format_func=lambda e: f"{by_ext[e]['name']} ({e})", label_visibility="collapsed")
+    d = service.claimant_detail(by_ext[pick]["id"])
+    ex = plain.explain(d, case)
+    with st.container(border=True):
+        st.markdown(f"### {ex['icon']} {d['name']}: {ex['headline']}")
+        for i, row in enumerate(ex["rows"]):
+            st.markdown(f"{row['icon']} **{row['rule']}**  \n{row['sentence']}")
+            if row["proof_fact"]:
+                with st.expander(f"📄 See the proof: {row['proof_label']}"):
+                    show_evidence(row["proof_fact"], f"ov{i}")
+        st.info(f"**Next step:** {ex['next_step']}")
+
+    nr = [c for c in summary if c["status"] == "needs_review"]
+    if nr:
+        st.subheader(f"⚠️ What needs a person right now ({len(nr)})")
+        for c in nr:
+            dd = service.claimant_detail(c["id"])
+            ee = plain.explain(dd, case)
+            issue = next((r["sentence"] for r in ee["rows"] if r["icon"] != "✅"), dd["reason"])
+            st.markdown(f"**{dd['name']}**: {issue}  \n➡️ {ee['next_step']}")
+
 # ------------------------------------------------------------------------------------------------ claimants
-if page == "Claimants":
-    st.title("Claimants")
+elif page == "All claimants":
+    st.title("All claimants")
     st.caption(case["description"])
     counts = pd.Series([c["status"] for c in summary]).value_counts()
     cols = st.columns(4)
@@ -280,8 +348,8 @@ elif page == "Claimant file":
             st.image(render_page(doc["path"], 1, "")[0], use_container_width=True)
 
 # ------------------------------------------------------------------------------------------------ review queue
-elif page == "Review queue":
-    st.title("Review queue")
+elif page == "Needs a person":
+    st.title("Needs a person")
     q = service.review_queue()
     st.caption(f"{len(q)} extracted facts could not be verified against their source and need a person. "
                "Approving one lets it count as evidence; the claimant is re-qualified immediately.")
@@ -360,8 +428,8 @@ elif page == "Accuracy & cost":
                                                            for x in res[m]["missed"]) or "no misses"))
 
 # ------------------------------------------------------------------------------------------------ integrations
-elif page == "Integrations & audit":
-    st.title("Integrations & audit")
+elif page == "Behind the scenes":
+    st.title("Behind the scenes: integrations & audit log")
     from claimcheck.integrations import cms, mock_cms
     st.markdown("**Firm case management system (mock)**: ClaimCheck pulls matters and documents, and writes "
                 "status and attorney decisions back to each matter.")
