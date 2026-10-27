@@ -75,26 +75,41 @@ def show_evidence(fact: dict, key: str) -> None:
 
 
 # ------------------------------------------------------------------------------------------------ sidebar
+SIMPLE = ["Overview", "Claimants"]
+TECHNICAL = ["Claimant details (technical)", "Accuracy & cost", "Behind the scenes"]
+PEOPLE = {"a.rivera": "Ana Rivera · Attorney", "j.chen": "Jamie Chen · Paralegal"}
+
+
+def open_claimant(ext: str, group: str) -> None:
+    """Button callback: jump to a claimant in the Claimants workspace."""
+    st.session_state["nav"], st.session_state["claimant_ext"], st.session_state["grp"] = "Claimants", ext, group
+
+
+qp = st.query_params            # deep links, e.g. ?view=Claimants&claimant=CC-1003
+if "nav" not in st.session_state:
+    st.session_state["nav"] = qp.get("view") if qp.get("view") in SIMPLE + TECHNICAL else "Overview"
+    st.session_state["tech"] = st.session_state["nav"] in TECHNICAL
+    if "claimant" in qp:
+        st.session_state["claimant_ext"] = qp["claimant"]
+
 with st.sidebar:
     st.markdown("## ⚖️ ClaimCheck")
     st.caption("Checks claimant files against the case rules, with proof")
-    user = st.selectbox("Signed in as", list(service.DEMO_USERS),
-                        format_func=lambda u: f"{u} ({service.DEMO_USERS[u]})")
+    user = st.selectbox("Viewing as", list(PEOPLE), format_func=PEOPLE.get)
     role = service.DEMO_USERS[user]
-    views = ["Overview", "All claimants", "Claimant file", "Needs a person", "Accuracy & cost", "Behind the scenes", "About"]
-    qp = st.query_params        # deep links, e.g. ?view=Claimant+file&claimant=CC-1003
-    if "claimant" in qp and "claimant_ext" not in st.session_state:
-        st.session_state["claimant_ext"] = qp["claimant"]
-    page = st.radio("View", views, index=views.index(qp["view"]) if qp.get("view") in views else 0,
-                    label_visibility="collapsed")
+    tech = st.toggle("Show technical pages", key="tech")
+    views = SIMPLE + (TECHNICAL if tech else [])
+    if st.session_state["nav"] not in views:
+        st.session_state["nav"] = "Overview"
+    page = st.radio("Page", views, key="nav", label_visibility="collapsed")
     st.divider()
     case = rules.load_case(config.DEFAULT_CASE)
     st.caption(f"**Case:** {case['name']}")
     st.caption("All people and records are made up. No real patient data.")
-    with st.expander("Technical details"):
-        st.caption(f"**Live LLM:** {config.CHAT_MODEL if llm.llm_enabled() else 'off (offline mode)'}")
-        st.caption(f"**This dataset was extracted with:** {service.extraction_provenance()}")
-        st.caption(f"**Database:** {config.DATABASE_URL.split(':')[0]}")
+    if tech:
+        st.caption(f"**Live LLM:** {config.CHAT_MODEL if llm.llm_enabled() else 'off (offline mode)'} · "
+                   f"**Dataset extracted with:** {service.extraction_provenance()} · "
+                   f"**Database:** {config.DATABASE_URL.split(':')[0]}")
 
 summary = service.claimant_summary()
 by_ext = {c["external_id"]: c for c in summary}
@@ -173,32 +188,116 @@ if page == "Overview":
             dd = service.claimant_detail(c["id"])
             ee = plain.explain(dd, case)
             issue = next((r["sentence"] for r in ee["rows"] if r["icon"] != "✅"), dd["reason"])
-            st.markdown(f"**{dd['name']}**: {issue}  \n➡️ {ee['next_step']}")
+            c1, c2 = st.columns([5, 1])
+            c1.markdown(f"**{dd['name']}**: {issue}  \n➡️ {ee['next_step']}")
+            c2.button("Open file →", key=f"open{c['id']}", on_click=open_claimant, args=(c["external_id"], "needs_review"))
 
 # ------------------------------------------------------------------------------------------------ claimants
-elif page == "All claimants":
-    st.title("All claimants")
-    st.caption(case["description"])
-    counts = pd.Series([c["status"] for c in summary]).value_counts()
-    cols = st.columns(4)
-    for col, s in zip(cols, ["qualified", "needs_review", "not_qualified"]):
-        col.metric(status_label(s), int(counts.get(s, 0)))
-    cols[3].metric("🖊️ Attorney decisions", sum(1 for c in summary if c["decision"]))
+elif page == "Claimants":
+    st.title("Claimants")
+    GROUPS = {"needs_review": "⚠️ Needs a person", "qualified": "✅ Ready to sign off",
+              "not_qualified": "❌ Doesn't qualify", "signed": "🖊️ Signed off"}
 
-    f = st.multiselect("Filter by status", list(STATUS)[:3], format_func=status_label)
-    rows = [c for c in summary if not f or c["status"] in f]
-    df = pd.DataFrame([{"Matter": c["external_id"], "Claimant": c["name"], "Status": status_label(c["status"]),
-                        "Why": c["reason"], "Docs": c["documents"], "Unverified facts": c["unverified_facts"],
-                        "Draft requests": c["draft_requests"],
-                        "Attorney decision": status_label(c["decision"]) if c["decision"] else "—"} for c in rows])
-    event = st.dataframe(df, hide_index=True, use_container_width=True, on_select="rerun", selection_mode="single-row",
-                         column_config={"Why": st.column_config.TextColumn(width="large")})
-    if event.selection.rows:
-        st.session_state["claimant_ext"] = rows[event.selection.rows[0]]["external_id"]
-        st.info(f"Selected {st.session_state['claimant_ext']}. Open **Claimant file** in the sidebar to review it.")
+    def in_group(c: dict, g: str) -> bool:
+        return bool(c["decision"]) if g == "signed" else (c["status"] == g and not c["decision"])
+
+    if st.session_state.get("grp") not in GROUPS:
+        st.session_state["grp"] = "needs_review"
+    grp = st.radio("Show", list(GROUPS), key="grp", horizontal=True, label_visibility="collapsed",
+                   format_func=lambda g: f"{GROUPS[g]} ({sum(in_group(c, g) for c in summary)})")
+    members = [c for c in summary if in_group(c, grp)]
+    if not members:
+        st.info("Nothing here right now.")
+        st.stop()
+
+    left, right = st.columns([1, 2.8], gap="large")
+    with left:
+        exts = [c["external_id"] for c in members]
+        cur = st.session_state.get("claimant_ext")
+        ext = st.radio("Claimant", exts, index=exts.index(cur) if cur in exts else 0,
+                       format_func=lambda e: by_ext[e]["name"], label_visibility="collapsed")
+        st.session_state["claimant_ext"] = ext
+
+    with right:
+        d = service.claimant_detail(by_ext[ext]["id"])
+        ex = plain.explain(d, case)
+        st.markdown(f"## {ex['icon']} {d['name']}")
+        st.caption(f"{ex['headline']} · Matter {d['external_id']}")
+        with st.container(border=True):
+            for i, row in enumerate(ex["rows"]):
+                st.markdown(f"{row['icon']} **{row['rule']}**  \n{row['sentence']}")
+                if row["proof_fact"]:
+                    with st.expander(f"📄 See the proof: {row['proof_label']}"):
+                        show_evidence(row["proof_fact"], f"cl{i}")
+
+        st.markdown("#### What to do")
+        todo = False
+        # 1) facts the system read but couldn't confirm: a person decides
+        for f in [f for f in d["facts"] if not f["verified"] and f["review_status"] == "pending"
+                  and f["fact_type"] in ("exposure", "diagnosis")]:
+            todo = True
+            with st.container(border=True):
+                st.markdown(f"🔍 **Please check:** the system read *“{plain.describe_fact(f)}”* "
+                            "but couldn't confirm it on the page.")
+                show_evidence(f, f"u{f['id']}")
+                b1, b2 = st.columns(2)
+                if b1.button("✔ Looks right", key=f"ok{f['id']}", type="primary", use_container_width=True):
+                    service.review_fact(f["id"], "approve", user, role)
+                    st.rerun()
+                if b2.button("✖ It's wrong", key=f"no{f['id']}", use_container_width=True):
+                    service.review_fact(f["id"], "reject", user, role)
+                    st.rerun()
+        # 2) letters the system drafted for missing records
+        for r in d["records_requests"]:
+            if r["status"] != "draft":
+                st.caption(f"📨 Letter to {r['provider']}: {r['status']}" +
+                           (f" by {r['approved_by']}" if r["approved_by"] else ""))
+                continue
+            todo = True
+            with st.container(border=True):
+                st.markdown(f"📨 **Letter ready to send:** asks **{r['provider']}** for {r['record_type']}.")
+                with st.expander("Read the letter"):
+                    st.text(r["body"])
+                if role != "attorney":
+                    st.caption("🔒 Waiting for an attorney to approve it.")
+                else:
+                    b1, b2 = st.columns(2)
+                    if b1.button("✔ Approve letter", key=f"ra{r['id']}", type="primary", use_container_width=True):
+                        service.review_request(r["id"], True, user, role)
+                        st.rerun()
+                    if b2.button("✖ Don't send", key=f"rr{r['id']}", use_container_width=True):
+                        service.review_request(r["id"], False, user, role)
+                        st.rerun()
+        # 3) attorney sign-off
+        if d["decision"]:
+            st.success(f"🖊️ Signed off by {d['decided_by']}: "
+                       f"{'qualifies' if d['decision'] == 'qualified' else 'does not qualify'}.")
+        elif d["status"] in ("qualified", "not_qualified"):
+            todo = True
+            rec = "qualifies" if d["status"] == "qualified" else "doesn't qualify"
+            other = "not_qualified" if d["status"] == "qualified" else "qualified"
+            with st.container(border=True):
+                st.markdown(f"🖊️ **Sign-off.** The system recommends: this claimant **{rec}**.")
+                if role != "attorney":
+                    st.caption("🔒 An attorney signs off on this file.")
+                else:
+                    b1, b2 = st.columns(2)
+                    if b1.button(f"✔ Agree: {rec}", type="primary", use_container_width=True):
+                        service.decide_claimant(d["id"], d["status"], user, role)
+                        st.rerun()
+                    with b2.popover("Disagree", use_container_width=True):
+                        note = st.text_input("Why? (required, kept in the audit log)")
+                        if st.button("Save my decision"):
+                            try:
+                                service.decide_claimant(d["id"], other, user, role, note)
+                                st.rerun()
+                            except ValueError as e:
+                                st.error(str(e))
+        if not todo and not d["decision"]:
+            st.info(ex["next_step"])
 
 # ------------------------------------------------------------------------------------------------ claimant file
-elif page == "Claimant file":
+elif page == "Claimant details (technical)":
     c = pick_claimant()
     d = service.claimant_detail(c["id"])
     facts = {f["id"]: f for f in d["facts"]}
@@ -347,31 +446,6 @@ elif page == "Claimant file":
         if doc:
             st.image(render_page(doc["path"], 1, "")[0], use_container_width=True)
 
-# ------------------------------------------------------------------------------------------------ review queue
-elif page == "Needs a person":
-    st.title("Needs a person")
-    q = service.review_queue()
-    st.caption(f"{len(q)} extracted facts could not be verified against their source and need a person. "
-               "Approving one lets it count as evidence; the claimant is re-qualified immediately.")
-    for item in q[:40]:
-        with st.expander(f"⚠️ {item['external_id']} · {item['fact_type']}: {json.dumps(item['value'])[:100]}"):
-            st.markdown(f"> “{item['quote']}”")
-            st.caption(f"{item['filename']} p.{item['page_no']} · match score {item['match_score']:.0f}")
-            cols = st.columns([1, 1, 4])
-            if cols[0].button("Approve", key=f"qa{item['fact_id']}"):
-                r = service.review_fact(item["fact_id"], "approve", user, role)
-                st.toast(f"{item['external_id']} → {status_label(r['status'])}")
-                st.rerun()
-            if cols[1].button("Reject", key=f"qr{item['fact_id']}"):
-                service.review_fact(item["fact_id"], "reject", user, role)
-                st.rerun()
-            show_evidence(item, f"q{item['fact_id']}")
-    nr = [c for c in summary if c["status"] == "needs_review"]
-    st.subheader(f"⚠️ Claimants needing review ({len(nr)})")
-    st.dataframe(pd.DataFrame([{"Matter": c["external_id"], "Claimant": c["name"], "Why": c["reason"],
-                                "Draft requests": c["draft_requests"]} for c in nr]),
-                 hide_index=True, use_container_width=True)
-
 # ------------------------------------------------------------------------------------------------ accuracy & cost
 elif page == "Accuracy & cost":
     st.title("Accuracy & cost")
@@ -454,9 +528,3 @@ elif page == "Behind the scenes":
                                     "Entity": f"{x['entity']} {x['entity_id'] or ''}", "Detail": json.dumps(x["detail"])[:160]}
                                    for x in a if not pick or x["action"] in pick]),
                      hide_index=True, use_container_width=True)
-
-# ------------------------------------------------------------------------------------------------ about
-else:
-    st.title("About ClaimCheck")
-    st.markdown(open(config.ROOT / "docs" / "about.md").read() if (config.ROOT / "docs" / "about.md").exists()
-                else "See README.md")

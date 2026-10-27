@@ -11,7 +11,12 @@ sends anything uncertain to a paralegal, and drafts the follow-up work. Attorney
 
 ![ClaimCheck overview](docs/overview.png)
 
-<details><summary>Claimant file with highlighted evidence</summary>
+<details><summary>Claimants workspace: plain-English checks, proof, and one-click actions</summary>
+
+![ClaimCheck claimants](docs/claimants.png)
+</details>
+
+<details><summary>Technical view: claimant file with highlighted evidence</summary>
 
 ![ClaimCheck claimant file](docs/screenshot.png)
 </details>

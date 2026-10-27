@@ -87,7 +87,9 @@ def explain(detail: dict, case: dict) -> dict:
         elif rid == "qualifying_diagnosis":
             if dx and s == "pass":
                 v = dx[0]["value"]
-                sentence = f"A doctor confirmed {_illness(v, case).lower()} on {_day(v.get('date'))}"
+                name = _illness(v, case)
+                name = name if name.startswith("Parkinson") else name[0].lower() + name[1:]
+                sentence = f"A doctor confirmed {name} on {_day(v.get('date'))}"
             elif dx and s == "fail":
                 sentence = f"Diagnosed with {plain_condition(dx[0]['value'].get('condition'))}, which this case doesn't cover"
             elif dx:
@@ -130,3 +132,24 @@ def next_step(detail: dict) -> str:
         r = drafts[0]
         return f"A letter asking {r['provider']} for the missing records is drafted and waiting for an attorney's OK."
     return "A paralegal should look at the flagged record (about 2 minutes)."
+
+
+def describe_fact(f: dict) -> str:
+    """One fact as a sentence, e.g. 'Lived in Cedar Creek from Jul 1993 to Dec 2000'."""
+    v = f["value"]
+    t = f["fact_type"]
+    if t == "exposure":
+        where = "Worked at the Cedar Creek plant" if v.get("kind") == "employment" else "Lived in Cedar Creek"
+        return f"{where} from {_mon(v.get('start'))} to {_mon(v.get('end'))}"
+    if t == "diagnosis":
+        return f"Diagnosed with {plain_condition(v.get('condition'))} on {_day(v.get('date'))}"
+    if t == "visit":
+        return f"Doctor visit on {_day(v.get('date'))}" + (f" at {v['facility']}" if v.get("facility") else "")
+    if t == "charge":
+        try:
+            return f"Medical bill of ${float(v.get('amount')):,.2f} on {_day(v.get('date'))}"
+        except (TypeError, ValueError):
+            return f"Medical bill on {_day(v.get('date'))}"
+    if t == "date_of_birth":
+        return f"Born {_day(v.get('dob'))}"
+    return t.replace("_", " ")
