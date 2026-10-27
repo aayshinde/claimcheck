@@ -1,0 +1,117 @@
+{
+ "method": "hybrid",
+ "model": null,
+ "claimants": 24,
+ "facts": {
+  "all": {
+   "exposure": {
+    "precision": 1.0,
+    "recall": 1.0,
+    "f1": 1.0,
+    "tp": 22,
+    "predicted": 22,
+    "gold": 22
+   },
+   "diagnosis": {
+    "precision": 0.955,
+    "recall": 0.955,
+    "f1": 0.955,
+    "tp": 21,
+    "predicted": 22,
+    "gold": 22
+   },
+   "visit": {
+    "precision": 1.0,
+    "recall": 1.0,
+    "f1": 1.0,
+    "tp": 81,
+    "predicted": 81,
+    "gold": 81
+   },
+   "charge": {
+    "precision": 1.0,
+    "recall": 1.0,
+    "f1": 1.0,
+    "tp": 81,
+    "predicted": 81,
+    "gold": 81
+   },
+   "overall": {
+    "precision": 0.995,
+    "recall": 0.995,
+    "f1": 0.995,
+    "tp": 205,
+    "predicted": 206,
+    "gold": 206
+   }
+  },
+  "verified": {
+   "exposure": {
+    "precision": 1.0,
+    "recall": 1.0,
+    "f1": 1.0,
+    "tp": 22,
+    "predicted": 22,
+    "gold": 22
+   },
+   "diagnosis": {
+    "precision": 1.0,
+    "recall": 0.955,
+    "f1": 0.977,
+    "tp": 21,
+    "predicted": 21,
+    "gold": 22
+   },
+   "visit": {
+    "precision": 1.0,
+    "recall": 1.0,
+    "f1": 1.0,
+    "tp": 81,
+    "predicted": 81,
+    "gold": 81
+   },
+   "charge": {
+    "precision": 1.0,
+    "recall": 1.0,
+    "f1": 1.0,
+    "tp": 81,
+    "predicted": 81,
+    "gold": 81
+   },
+   "overall": {
+    "precision": 1.0,
+    "recall": 0.995,
+    "f1": 0.998,
+    "tp": 205,
+    "predicted": 205,
+    "gold": 206
+   }
+  }
+ },
+ "status_accuracy": 0.958,
+ "confusion": {
+  "qualified -> qualified": 12,
+  "not_qualified -> not_qualified": 7,
+  "needs_review -> needs_review": 4,
+  "not_qualified -> needs_review": 1
+ },
+ "false_qualifications": [],
+ "missed": [
+  {
+   "claimant": "CC-1015",
+   "expected": "not_qualified",
+   "got": "needs_review"
+  }
+ ],
+ "llm_usage": {
+  "calls": 58,
+  "input_tokens": 35168,
+  "output_tokens": 4109,
+  "avg_latency_s": 3.4,
+  "seconds_per_claimant": 8.2,
+  "actual_cost_usd": 0.0,
+  "reference_cost_usd": 0.0077,
+  "reference_cost_per_claimant_usd": 0.00032,
+  "reference_price": "paid API reference: $0.15/$0.6 per 1M tokens in/out"
+ }
+}

@@ -10,8 +10,8 @@ from __future__ import annotations
 from sqlalchemy import func, select
 
 from claimcheck import agent, extract, rules
-from claimcheck.db import (AgentRun, AuditLog, Claimant, Fact, RecordsRequest, RuleResult, audit, session_scope,
-                           utcnow)
+from claimcheck.db import (AgentRun, AuditLog, Claimant, Fact, LLMCall, RecordsRequest, RuleResult, audit,
+                           session_scope, utcnow)
 
 DEMO_USERS = {"a.rivera": "attorney", "j.chen": "paralegal"}   # stand-in for SSO groups
 ROLE_RANK = {"paralegal": 1, "attorney": 2}
@@ -136,3 +136,13 @@ def audit_trail(limit: int = 200) -> list[dict]:
         return [{"ts": a.ts, "actor": a.actor, "role": a.role, "action": a.action, "entity": a.entity,
                  "entity_id": a.entity_id, "detail": a.detail}
                 for a in s.scalars(select(AuditLog).order_by(AuditLog.id.desc()).limit(limit))]
+
+
+def extraction_provenance() -> str:
+    """How the facts in this database were produced, e.g. 'hybrid (qwen2.5:3b)', for honest labelling in the UI."""
+    with session_scope() as s:
+        methods = [m for m, in s.execute(select(Fact.method).group_by(Fact.method))]
+        model = s.scalar(select(LLMCall.model).where(LLMCall.purpose == "extract").limit(1))
+    if not methods:
+        return "nothing yet"
+    return ", ".join(methods) + (f" ({model})" if model and set(methods) & {"llm", "hybrid"} else "")

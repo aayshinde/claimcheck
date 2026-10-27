@@ -1,0 +1,1866 @@
+[
+ {
+  "external_id": "CC-1000",
+  "name": "Chris Curtis",
+  "dob": "1954-07-11",
+  "scenario": "qualified",
+  "expected_status": "qualified",
+  "facts": [
+   {
+    "fact_type": "exposure",
+    "file": "02_exposure_record.pdf",
+    "page": 1,
+    "start": "2000-01-06",
+    "end": "2001-02-06",
+    "kind": "residence"
+   },
+   {
+    "fact_type": "diagnosis",
+    "file": "03_diagnosis_record.pdf",
+    "page": 1,
+    "condition": "Idiopathic Parkinson's disease",
+    "icd10": "G20",
+    "date": "2010-02-10"
+   },
+   {
+    "fact_type": "visit",
+    "file": "04_visit_note.pdf",
+    "page": 1,
+    "date": "2010-02-21",
+    "provider": "Dr. Herrera",
+    "facility": "Lakeshore Regional Hospital"
+   },
+   {
+    "fact_type": "visit",
+    "file": "05_visit_note.pdf",
+    "page": 1,
+    "date": "2010-08-18",
+    "provider": "Dr. Diaz",
+    "facility": "Riverside Neurology Group"
+   },
+   {
+    "fact_type": "visit",
+    "file": "06_visit_note.pdf",
+    "page": 1,
+    "date": "2010-10-14",
+    "provider": "Dr. Brown",
+    "facility": "Lakeshore Regional Hospital"
+   },
+   {
+    "fact_type": "visit",
+    "file": "07_visit_note.pdf",
+    "page": 1,
+    "date": "2010-12-09",
+    "provider": "Dr. Romero",
+    "facility": "Lakeshore Regional Hospital"
+   },
+   {
+    "fact_type": "charge",
+    "file": "09_itemized_bill.pdf",
+    "page": 1,
+    "date": "2010-02-21",
+    "cpt": "99285",
+    "amount": 2369.46
+   },
+   {
+    "fact_type": "charge",
+    "file": "09_itemized_bill.pdf",
+    "page": 1,
+    "date": "2010-08-18",
+    "cpt": "99214",
+    "amount": 198.78
+   },
+   {
+    "fact_type": "charge",
+    "file": "09_itemized_bill.pdf",
+    "page": 1,
+    "date": "2010-10-14",
+    "cpt": "99204",
+    "amount": 284.54
+   },
+   {
+    "fact_type": "charge",
+    "file": "09_itemized_bill.pdf",
+    "page": 1,
+    "date": "2010-12-09",
+    "cpt": "99285",
+    "amount": 2401.66
+   }
+  ]
+ },
+ {
+  "external_id": "CC-1001",
+  "name": "Jeffrey Jones",
+  "dob": "1956-03-21",
+  "scenario": "qualified",
+  "expected_status": "qualified",
+  "facts": [
+   {
+    "fact_type": "exposure",
+    "file": "02_exposure_record.pdf",
+    "page": 1,
+    "start": "1990-11-21",
+    "end": "1992-05-09",
+    "kind": "employment"
+   },
+   {
+    "fact_type": "diagnosis",
+    "file": "03_diagnosis_record.pdf",
+    "page": 1,
+    "condition": "Idiopathic Parkinson's disease",
+    "icd10": "G20",
+    "date": "2019-02-07"
+   },
+   {
+    "fact_type": "visit",
+    "file": "04_visit_note.pdf",
+    "page": 1,
+    "date": "2019-03-19",
+    "provider": "Dr. Coleman",
+    "facility": "St. Brendan Oncology Associates"
+   },
+   {
+    "fact_type": "visit",
+    "file": "05_visit_note.pdf",
+    "page": 1,
+    "date": "2019-10-26",
+    "provider": "Dr. Serrano",
+    "facility": "Cedar Valley Medical Center"
+   },
+   {
+    "fact_type": "visit",
+    "file": "06_visit_note.pdf",
+    "page": 1,
+    "date": "2019-12-05",
+    "provider": "Dr. Martinez",
+    "facility": "St. Brendan Oncology Associates"
+   },
+   {
+    "fact_type": "visit",
+    "file": "07_visit_note.pdf",
+    "page": 1,
+    "date": "2020-01-16",
+    "provider": "Dr. Walker",
+    "facility": "Northfield Family Clinic"
+   },
+   {
+    "fact_type": "charge",
+    "file": "09_itemized_bill.pdf",
+    "page": 1,
+    "date": "2019-03-19",
+    "cpt": "88307",
+    "amount": 709.83
+   },
+   {
+    "fact_type": "charge",
+    "file": "09_itemized_bill.pdf",
+    "page": 1,
+    "date": "2019-10-26",
+    "cpt": "99204",
+    "amount": 371.36
+   },
+   {
+    "fact_type": "charge",
+    "file": "09_itemized_bill.pdf",
+    "page": 1,
+    "date": "2019-12-05",
+    "cpt": "99214",
+    "amount": 218.71
+   },
+   {
+    "fact_type": "charge",
+    "file": "09_itemized_bill.pdf",
+    "page": 1,
+    "date": "2020-01-16",
+    "cpt": "99214",
+    "amount": 178.61
+   }
+  ]
+ },
+ {
+  "external_id": "CC-1002",
+  "name": "Theresa Ray",
+  "dob": "1945-10-20",
+  "scenario": "outside_window",
+  "expected_status": "not_qualified",
+  "facts": [
+   {
+    "fact_type": "exposure",
+    "file": "02_exposure_record.pdf",
+    "page": 1,
+    "start": "2009-03-11",
+    "end": "2013-01-25",
+    "kind": "residence"
+   },
+   {
+    "fact_type": "diagnosis",
+    "file": "03_diagnosis_record.pdf",
+    "page": 1,
+    "condition": "Urothelial carcinoma of the bladder",
+    "icd10": "C67.9",
+    "date": "2023-02-21"
+   },
+   {
+    "fact_type": "visit",
+    "file": "04_visit_note.pdf",
+    "page": 1,
+    "date": "2023-03-10",
+    "provider": "Dr. Cherry",
+    "facility": "Northfield Family Clinic"
+   },
+   {
+    "fact_type": "visit",
+    "file": "05_visit_note.pdf",
+    "page": 1,
+    "date": "2023-10-08",
+    "provider": "Dr. Williams",
+    "facility": "Cedar Valley Medical Center"
+   },
+   {
+    "fact_type": "visit",
+    "file": "06_visit_note.pdf",
+    "page": 1,
+    "date": "2023-11-08",
+    "provider": "Dr. Garrison",
+    "facility": "Cedar Valley Medical Center"
+   },
+   {
+    "fact_type": "visit",
+    "file": "07_visit_note.pdf",
+    "page": 1,
+    "date": "2024-04-06",
+    "provider": "Dr. Roberts",
+    "facility": "Lakeshore Regional Hospital"
+   },
+   {
+    "fact_type": "charge",
+    "file": "09_itemized_bill.pdf",
+    "page": 1,
+    "date": "2023-03-10",
+    "cpt": "99204",
+    "amount": 367.37
+   },
+   {
+    "fact_type": "charge",
+    "file": "09_itemized_bill.pdf",
+    "page": 1,
+    "date": "2023-10-08",
+    "cpt": "88307",
+    "amount": 652.6
+   },
+   {
+    "fact_type": "charge",
+    "file": "09_itemized_bill.pdf",
+    "page": 1,
+    "date": "2023-11-08",
+    "cpt": "74177",
+    "amount": 1306.69
+   },
+   {
+    "fact_type": "charge",
+    "file": "09_itemized_bill.pdf",
+    "page": 1,
+    "date": "2024-04-06",
+    "cpt": "99204",
+    "amount": 283.89
+   }
+  ]
+ },
+ {
+  "external_id": "CC-1003",
+  "name": "Bruce Parker",
+  "dob": "1965-06-04",
+  "scenario": "qualified",
+  "expected_status": "qualified",
+  "facts": [
+   {
+    "fact_type": "exposure",
+    "file": "02_exposure_record.pdf",
+    "page": 1,
+    "start": "1993-07-27",
+    "end": "2000-12-30",
+    "kind": "residence"
+   },
+   {
+    "fact_type": "diagnosis",
+    "file": "03_diagnosis_record.pdf",
+    "page": 1,
+    "condition": "Clear cell renal cell carcinoma, left kidney",
+    "icd10": "C64.2",
+    "date": "2012-08-30"
+   },
+   {
+    "fact_type": "visit",
+    "file": "04_visit_note.pdf",
+    "page": 1,
+    "date": "2012-09-12",
+    "provider": "Dr. White",
+    "facility": "Northfield Family Clinic"
+   },
+   {
+    "fact_type": "visit",
+    "file": "05_visit_note.pdf",
+    "page": 1,
+    "date": "2012-10-18",
+    "provider": "Dr. Perkins",
+    "facility": "Cedar Valley Medical Center"
+   },
+   {
+    "fact_type": "visit",
+    "file": "06_visit_note.pdf",
+    "page": 1,
+    "date": "2012-12-21",
+    "provider": "Dr. Fowler",
+    "facility": "Lakeshore Regional Hospital"
+   },
+   {
+    "fact_type": "visit",
+    "file": "07_visit_note.pdf",
+    "page": 1,
+    "date": "2013-05-22",
+    "provider": "Dr. Watson",
+    "facility": "Lakeshore Regional Hospital"
+   },
+   {
+    "fact_type": "charge",
+    "file": "09_itemized_bill.pdf",
+    "page": 1,
+    "date": "2012-09-12",
+    "cpt": "99204",
+    "amount": 306.72
+   },
+   {
+    "fact_type": "charge",
+    "file": "09_itemized_bill.pdf",
+    "page": 1,
+    "date": "2012-10-18",
+    "cpt": "74177",
+    "amount": 1429.53
+   },
+   {
+    "fact_type": "charge",
+    "file": "09_itemized_bill.pdf",
+    "page": 1,
+    "date": "2012-12-21",
+    "cpt": "74177",
+    "amount": 1539.24
+   },
+   {
+    "fact_type": "charge",
+    "file": "09_itemized_bill.pdf",
+    "page": 1,
+    "date": "2013-05-22",
+    "cpt": "74177",
+    "amount": 1498.51
+   }
+  ]
+ },
+ {
+  "external_id": "CC-1004",
+  "name": "Amy Brown",
+  "dob": "1972-10-15",
+  "scenario": "short_exposure",
+  "expected_status": "not_qualified",
+  "facts": [
+   {
+    "fact_type": "exposure",
+    "file": "02_exposure_record.pdf",
+    "page": 1,
+    "start": "1998-08-04",
+    "end": "1998-08-18",
+    "kind": "residence"
+   },
+   {
+    "fact_type": "diagnosis",
+    "file": "03_diagnosis_record.pdf",
+    "page": 1,
+    "condition": "Idiopathic Parkinson's disease",
+    "icd10": "G20",
+    "date": "2015-09-21"
+   },
+   {
+    "fact_type": "visit",
+    "file": "04_visit_note.pdf",
+    "page": 1,
+    "date": "2015-10-16",
+    "provider": "Dr. Becker",
+    "facility": "Cedar Valley Medical Center"
+   },
+   {
+    "fact_type": "visit",
+    "file": "05_visit_note.pdf",
+    "page": 1,
+    "date": "2015-12-14",
+    "provider": "Dr. Patterson",
+    "facility": "St. Brendan Oncology Associates"
+   },
+   {
+    "fact_type": "visit",
+    "file": "06_visit_note.pdf",
+    "page": 1,
+    "date": "2016-02-02",
+    "provider": "Dr. Edwards",
+    "facility": "Cedar Valley Medical Center"
+   },
+   {
+    "fact_type": "visit",
+    "file": "07_visit_note.pdf",
+    "page": 1,
+    "date": "2016-03-15",
+    "provider": "Dr. Richards",
+    "facility": "St. Brendan Oncology Associates"
+   },
+   {
+    "fact_type": "charge",
+    "file": "09_itemized_bill.pdf",
+    "page": 1,
+    "date": "2015-10-16",
+    "cpt": "88307",
+    "amount": 746.69
+   },
+   {
+    "fact_type": "charge",
+    "file": "09_itemized_bill.pdf",
+    "page": 1,
+    "date": "2015-12-14",
+    "cpt": "88307",
+    "amount": 653.07
+   },
+   {
+    "fact_type": "charge",
+    "file": "09_itemized_bill.pdf",
+    "page": 1,
+    "date": "2016-02-02",
+    "cpt": "99214",
+    "amount": 174.89
+   },
+   {
+    "fact_type": "charge",
+    "file": "09_itemized_bill.pdf",
+    "page": 1,
+    "date": "2016-03-15",
+    "cpt": "99285",
+    "amount": 2187.05
+   }
+  ]
+ },
+ {
+  "external_id": "CC-1005",
+  "name": "Elijah Bauer",
+  "dob": "1940-12-16",
+  "scenario": "non_qualifying_dx",
+  "expected_status": "not_qualified",
+  "facts": [
+   {
+    "fact_type": "exposure",
+    "file": "02_exposure_record.pdf",
+    "page": 1,
+    "start": "1997-03-23",
+    "end": "1999-05-02",
+    "kind": "employment"
+   },
+   {
+    "fact_type": "diagnosis",
+    "file": "03_diagnosis_record.pdf",
+    "page": 1,
+    "condition": "Type 2 diabetes mellitus without complications",
+    "icd10": "E11.9",
+    "date": "2012-09-24"
+   },
+   {
+    "fact_type": "visit",
+    "file": "04_visit_note.pdf",
+    "page": 1,
+    "date": "2012-10-25",
+    "provider": "Dr. Sanchez",
+    "facility": "St. Brendan Oncology Associates"
+   },
+   {
+    "fact_type": "visit",
+    "file": "05_visit_note.pdf",
+    "page": 1,
+    "date": "2012-12-17",
+    "provider": "Dr. Andrews",
+    "facility": "Riverside Neurology Group"
+   },
+   {
+    "fact_type": "visit",
+    "file": "06_visit_note.pdf",
+    "page": 1,
+    "date": "2013-02-07",
+    "provider": "Dr. Fox",
+    "facility": "Riverside Neurology Group"
+   },
+   {
+    "fact_type": "visit",
+    "file": "07_visit_note.pdf",
+    "page": 1,
+    "date": "2013-07-26",
+    "provider": "Dr. Golden",
+    "facility": "Lakeshore Regional Hospital"
+   },
+   {
+    "fact_type": "charge",
+    "file": "09_itemized_bill.pdf",
+    "page": 1,
+    "date": "2012-10-25",
+    "cpt": "74177",
+    "amount": 1338.3
+   },
+   {
+    "fact_type": "charge",
+    "file": "09_itemized_bill.pdf",
+    "page": 1,
+    "date": "2012-12-17",
+    "cpt": "99285",
+    "amount": 2551.86
+   },
+   {
+    "fact_type": "charge",
+    "file": "09_itemized_bill.pdf",
+    "page": 1,
+    "date": "2013-02-07",
+    "cpt": "99204",
+    "amount": 284.28
+   },
+   {
+    "fact_type": "charge",
+    "file": "09_itemized_bill.pdf",
+    "page": 1,
+    "date": "2013-07-26",
+    "cpt": "99204",
+    "amount": 321.05
+   }
+  ]
+ },
+ {
+  "external_id": "CC-1006",
+  "name": "Donna Baird",
+  "dob": "1974-02-02",
+  "scenario": "qualified",
+  "expected_status": "qualified",
+  "facts": [
+   {
+    "fact_type": "exposure",
+    "file": "02_exposure_record.pdf",
+    "page": 1,
+    "start": "1992-09-19",
+    "end": "2000-02-18",
+    "kind": "residence"
+   },
+   {
+    "fact_type": "diagnosis",
+    "file": "03_diagnosis_record.pdf",
+    "page": 1,
+    "condition": "Hepatocellular carcinoma",
+    "icd10": "C22.0",
+    "date": "2018-02-22"
+   },
+   {
+    "fact_type": "visit",
+    "file": "04_visit_note.pdf",
+    "page": 1,
+    "date": "2018-03-17",
+    "provider": "Dr. Barnes",
+    "facility": "Lakeshore Regional Hospital"
+   },
+   {
+    "fact_type": "visit",
+    "file": "05_visit_note.pdf",
+    "page": 1,
+    "date": "2018-09-21",
+    "provider": "Dr. Sherman",
+    "facility": "Lakeshore Regional Hospital"
+   },
+   {
+    "fact_type": "charge",
+    "file": "09_itemized_bill.pdf",
+    "page": 1,
+    "date": "2018-03-17",
+    "cpt": "74177",
+    "amount": 1385.82
+   },
+   {
+    "fact_type": "charge",
+    "file": "09_itemized_bill.pdf",
+    "page": 1,
+    "date": "2018-09-21",
+    "cpt": "88307",
+    "amount": 745.91
+   }
+  ]
+ },
+ {
+  "external_id": "CC-1007",
+  "name": "John Williams",
+  "dob": "1969-12-15",
+  "scenario": "self_reported_dx",
+  "expected_status": "needs_review",
+  "facts": [
+   {
+    "fact_type": "exposure",
+    "file": "02_exposure_record.pdf",
+    "page": 1,
+    "start": "1995-02-04",
+    "end": "2001-06-03",
+    "kind": "employment"
+   },
+   {
+    "fact_type": "visit",
+    "file": "04_visit_note.pdf",
+    "page": 1,
+    "date": "2017-07-07",
+    "provider": "Dr. Barnett",
+    "facility": "Lakeshore Regional Hospital"
+   },
+   {
+    "fact_type": "visit",
+    "file": "05_visit_note.pdf",
+    "page": 1,
+    "date": "2018-01-15",
+    "provider": "Dr. Duran",
+    "facility": "Lakeshore Regional Hospital"
+   },
+   {
+    "fact_type": "visit",
+    "file": "06_visit_note.pdf",
+    "page": 1,
+    "date": "2018-02-22",
+    "provider": "Dr. Berry",
+    "facility": "Riverside Neurology Group"
+   },
+   {
+    "fact_type": "visit",
+    "file": "07_visit_note.pdf",
+    "page": 1,
+    "date": "2018-03-18",
+    "provider": "Dr. Hutchinson",
+    "facility": "Lakeshore Regional Hospital"
+   },
+   {
+    "fact_type": "charge",
+    "file": "09_itemized_bill.pdf",
+    "page": 1,
+    "date": "2017-07-07",
+    "cpt": "99214",
+    "amount": 216.78
+   },
+   {
+    "fact_type": "charge",
+    "file": "09_itemized_bill.pdf",
+    "page": 1,
+    "date": "2018-01-15",
+    "cpt": "99285",
+    "amount": 2360.32
+   },
+   {
+    "fact_type": "charge",
+    "file": "09_itemized_bill.pdf",
+    "page": 1,
+    "date": "2018-02-22",
+    "cpt": "99214",
+    "amount": 181.99
+   },
+   {
+    "fact_type": "charge",
+    "file": "09_itemized_bill.pdf",
+    "page": 1,
+    "date": "2018-03-18",
+    "cpt": "99214",
+    "amount": 201.71
+   }
+  ]
+ },
+ {
+  "external_id": "CC-1008",
+  "name": "Michael Wheeler",
+  "dob": "1943-10-04",
+  "scenario": "missing_exposure_doc",
+  "expected_status": "needs_review",
+  "facts": [
+   {
+    "fact_type": "diagnosis",
+    "file": "03_diagnosis_record.pdf",
+    "page": 1,
+    "condition": "Clear cell renal cell carcinoma, left kidney",
+    "icd10": "C64.2",
+    "date": "2015-08-10"
+   },
+   {
+    "fact_type": "visit",
+    "file": "04_visit_note.pdf",
+    "page": 1,
+    "date": "2015-08-28",
+    "provider": "Dr. Bryant",
+    "facility": "Lakeshore Regional Hospital"
+   },
+   {
+    "fact_type": "visit",
+    "file": "05_visit_note.pdf",
+    "page": 1,
+    "date": "2016-03-04",
+    "provider": "Dr. Larsen",
+    "facility": "Cedar Valley Medical Center"
+   },
+   {
+    "fact_type": "charge",
+    "file": "09_itemized_bill.pdf",
+    "page": 1,
+    "date": "2015-08-28",
+    "cpt": "99285",
+    "amount": 2319.47
+   },
+   {
+    "fact_type": "charge",
+    "file": "09_itemized_bill.pdf",
+    "page": 1,
+    "date": "2016-03-04",
+    "cpt": "99204",
+    "amount": 330.25
+   }
+  ]
+ },
+ {
+  "external_id": "CC-1009",
+  "name": "Kara Beck",
+  "dob": "1963-01-25",
+  "scenario": "qualified",
+  "expected_status": "qualified",
+  "facts": [
+   {
+    "fact_type": "exposure",
+    "file": "02_exposure_record.pdf",
+    "page": 1,
+    "start": "1987-10-19",
+    "end": "1995-09-23",
+    "kind": "employment"
+   },
+   {
+    "fact_type": "diagnosis",
+    "file": "03_diagnosis_record.pdf",
+    "page": 1,
+    "condition": "Diffuse large B-cell lymphoma",
+    "icd10": "C83.30",
+    "date": "2020-03-30"
+   },
+   {
+    "fact_type": "visit",
+    "file": "04_visit_note.pdf",
+    "page": 1,
+    "date": "2020-05-07",
+    "provider": "Dr. Miles",
+    "facility": "Northfield Family Clinic"
+   },
+   {
+    "fact_type": "visit",
+    "file": "05_visit_note.pdf",
+    "page": 1,
+    "date": "2020-05-30",
+    "provider": "Dr. Holland",
+    "facility": "Lakeshore Regional Hospital"
+   },
+   {
+    "fact_type": "visit",
+    "file": "06_visit_note.pdf",
+    "page": 1,
+    "date": "2021-02-11",
+    "provider": "Dr. Kaiser",
+    "facility": "Riverside Neurology Group"
+   },
+   {
+    "fact_type": "charge",
+    "file": "09_itemized_bill.pdf",
+    "page": 1,
+    "date": "2020-05-07",
+    "cpt": "99214",
+    "amount": 192.0
+   },
+   {
+    "fact_type": "charge",
+    "file": "09_itemized_bill.pdf",
+    "page": 1,
+    "date": "2020-05-30",
+    "cpt": "99285",
+    "amount": 2745.52
+   },
+   {
+    "fact_type": "charge",
+    "file": "09_itemized_bill.pdf",
+    "page": 1,
+    "date": "2021-02-11",
+    "cpt": "74177",
+    "amount": 1429.9
+   }
+  ]
+ },
+ {
+  "external_id": "CC-1010",
+  "name": "Dominique Cruz",
+  "dob": "1955-01-16",
+  "scenario": "dx_before_exposure",
+  "expected_status": "not_qualified",
+  "facts": [
+   {
+    "fact_type": "exposure",
+    "file": "02_exposure_record.pdf",
+    "page": 1,
+    "start": "1991-09-02",
+    "end": "1997-11-08",
+    "kind": "residence"
+   },
+   {
+    "fact_type": "diagnosis",
+    "file": "03_diagnosis_record.pdf",
+    "page": 1,
+    "condition": "Urothelial carcinoma of the bladder",
+    "icd10": "C67.9",
+    "date": "1988-04-17"
+   },
+   {
+    "fact_type": "visit",
+    "file": "04_visit_note.pdf",
+    "page": 1,
+    "date": "1988-04-29",
+    "provider": "Dr. Johnson",
+    "facility": "St. Brendan Oncology Associates"
+   },
+   {
+    "fact_type": "visit",
+    "file": "05_visit_note.pdf",
+    "page": 1,
+    "date": "1988-07-06",
+    "provider": "Dr. Murray",
+    "facility": "Riverside Neurology Group"
+   },
+   {
+    "fact_type": "visit",
+    "file": "06_visit_note.pdf",
+    "page": 1,
+    "date": "1989-03-04",
+    "provider": "Dr. Jackson",
+    "facility": "Riverside Neurology Group"
+   },
+   {
+    "fact_type": "visit",
+    "file": "07_visit_note.pdf",
+    "page": 1,
+    "date": "1989-05-01",
+    "provider": "Dr. Wilson",
+    "facility": "Lakeshore Regional Hospital"
+   },
+   {
+    "fact_type": "charge",
+    "file": "09_itemized_bill.pdf",
+    "page": 1,
+    "date": "1988-04-29",
+    "cpt": "99214",
+    "amount": 212.28
+   },
+   {
+    "fact_type": "charge",
+    "file": "09_itemized_bill.pdf",
+    "page": 1,
+    "date": "1988-07-06",
+    "cpt": "99204",
+    "amount": 349.02
+   },
+   {
+    "fact_type": "charge",
+    "file": "09_itemized_bill.pdf",
+    "page": 1,
+    "date": "1989-03-04",
+    "cpt": "99214",
+    "amount": 168.23
+   },
+   {
+    "fact_type": "charge",
+    "file": "09_itemized_bill.pdf",
+    "page": 1,
+    "date": "1989-05-01",
+    "cpt": "88307",
+    "amount": 736.48
+   }
+  ]
+ },
+ {
+  "external_id": "CC-1011",
+  "name": "Randy Anderson",
+  "dob": "1968-02-28",
+  "scenario": "qualified_scanned",
+  "expected_status": "qualified",
+  "facts": [
+   {
+    "fact_type": "exposure",
+    "file": "02_exposure_record.pdf",
+    "page": 1,
+    "start": "1996-05-22",
+    "end": "1999-11-23",
+    "kind": "residence"
+   },
+   {
+    "fact_type": "diagnosis",
+    "file": "03_diagnosis_record.pdf",
+    "page": 1,
+    "condition": "Diffuse large B-cell lymphoma",
+    "icd10": "C83.30",
+    "date": "2009-07-28"
+   },
+   {
+    "fact_type": "visit",
+    "file": "04_visit_note.pdf",
+    "page": 1,
+    "date": "2009-08-27",
+    "provider": "Dr. Myers",
+    "facility": "Riverside Neurology Group"
+   },
+   {
+    "fact_type": "visit",
+    "file": "05_visit_note.pdf",
+    "page": 1,
+    "date": "2009-10-10",
+    "provider": "Dr. Savage",
+    "facility": "Northfield Family Clinic"
+   },
+   {
+    "fact_type": "visit",
+    "file": "06_visit_note.pdf",
+    "page": 1,
+    "date": "2010-06-04",
+    "provider": "Dr. Miller",
+    "facility": "Cedar Valley Medical Center"
+   },
+   {
+    "fact_type": "charge",
+    "file": "09_itemized_bill.pdf",
+    "page": 1,
+    "date": "2009-08-27",
+    "cpt": "99204",
+    "amount": 292.71
+   },
+   {
+    "fact_type": "charge",
+    "file": "09_itemized_bill.pdf",
+    "page": 1,
+    "date": "2009-10-10",
+    "cpt": "99204",
+    "amount": 331.8
+   },
+   {
+    "fact_type": "charge",
+    "file": "09_itemized_bill.pdf",
+    "page": 1,
+    "date": "2010-06-04",
+    "cpt": "99214",
+    "amount": 204.92
+   }
+  ]
+ },
+ {
+  "external_id": "CC-1012",
+  "name": "Joshua Ware",
+  "dob": "1953-01-17",
+  "scenario": "qualified",
+  "expected_status": "qualified",
+  "facts": [
+   {
+    "fact_type": "exposure",
+    "file": "02_exposure_record.pdf",
+    "page": 1,
+    "start": "1995-11-02",
+    "end": "2001-08-10",
+    "kind": "employment"
+   },
+   {
+    "fact_type": "diagnosis",
+    "file": "03_diagnosis_record.pdf",
+    "page": 1,
+    "condition": "Clear cell renal cell carcinoma, left kidney",
+    "icd10": "C64.2",
+    "date": "2020-04-25"
+   },
+   {
+    "fact_type": "visit",
+    "file": "04_visit_note.pdf",
+    "page": 1,
+    "date": "2020-06-03",
+    "provider": "Dr. Shields",
+    "facility": "Northfield Family Clinic"
+   },
+   {
+    "fact_type": "visit",
+    "file": "05_visit_note.pdf",
+    "page": 1,
+    "date": "2020-11-11",
+    "provider": "Dr. Ramirez",
+    "facility": "Lakeshore Regional Hospital"
+   },
+   {
+    "fact_type": "charge",
+    "file": "09_itemized_bill.pdf",
+    "page": 1,
+    "date": "2020-06-03",
+    "cpt": "99214",
+    "amount": 205.54
+   },
+   {
+    "fact_type": "charge",
+    "file": "09_itemized_bill.pdf",
+    "page": 1,
+    "date": "2020-11-11",
+    "cpt": "88307",
+    "amount": 580.77
+   }
+  ]
+ },
+ {
+  "external_id": "CC-1013",
+  "name": "Ian Henson",
+  "dob": "1962-01-20",
+  "scenario": "short_exposure",
+  "expected_status": "not_qualified",
+  "facts": [
+   {
+    "fact_type": "exposure",
+    "file": "02_exposure_record.pdf",
+    "page": 1,
+    "start": "1994-10-09",
+    "end": "1994-10-19",
+    "kind": "employment"
+   },
+   {
+    "fact_type": "diagnosis",
+    "file": "03_diagnosis_record.pdf",
+    "page": 1,
+    "condition": "Hepatocellular carcinoma",
+    "icd10": "C22.0",
+    "date": "2016-06-08"
+   },
+   {
+    "fact_type": "visit",
+    "file": "04_visit_note.pdf",
+    "page": 1,
+    "date": "2016-07-15",
+    "provider": "Dr. Hernandez",
+    "facility": "Lakeshore Regional Hospital"
+   },
+   {
+    "fact_type": "visit",
+    "file": "05_visit_note.pdf",
+    "page": 1,
+    "date": "2017-02-04",
+    "provider": "Dr. Thompson",
+    "facility": "Northfield Family Clinic"
+   },
+   {
+    "fact_type": "visit",
+    "file": "06_visit_note.pdf",
+    "page": 1,
+    "date": "2017-02-27",
+    "provider": "Dr. Hall",
+    "facility": "Cedar Valley Medical Center"
+   },
+   {
+    "fact_type": "visit",
+    "file": "07_visit_note.pdf",
+    "page": 1,
+    "date": "2017-08-02",
+    "provider": "Dr. Hall",
+    "facility": "Lakeshore Regional Hospital"
+   },
+   {
+    "fact_type": "charge",
+    "file": "09_itemized_bill.pdf",
+    "page": 1,
+    "date": "2016-07-15",
+    "cpt": "99204",
+    "amount": 308.35
+   },
+   {
+    "fact_type": "charge",
+    "file": "09_itemized_bill.pdf",
+    "page": 1,
+    "date": "2017-02-04",
+    "cpt": "99204",
+    "amount": 330.08
+   },
+   {
+    "fact_type": "charge",
+    "file": "09_itemized_bill.pdf",
+    "page": 1,
+    "date": "2017-02-27",
+    "cpt": "88307",
+    "amount": 694.06
+   },
+   {
+    "fact_type": "charge",
+    "file": "09_itemized_bill.pdf",
+    "page": 1,
+    "date": "2017-08-02",
+    "cpt": "99214",
+    "amount": 217.11
+   }
+  ]
+ },
+ {
+  "external_id": "CC-1014",
+  "name": "Mr. Dennis Smith",
+  "dob": "1947-08-29",
+  "scenario": "qualified",
+  "expected_status": "qualified",
+  "facts": [
+   {
+    "fact_type": "exposure",
+    "file": "02_exposure_record.pdf",
+    "page": 1,
+    "start": "1991-09-26",
+    "end": "1995-08-15",
+    "kind": "employment"
+   },
+   {
+    "fact_type": "diagnosis",
+    "file": "03_diagnosis_record.pdf",
+    "page": 1,
+    "condition": "Hepatocellular carcinoma",
+    "icd10": "C22.0",
+    "date": "2017-02-09"
+   },
+   {
+    "fact_type": "visit",
+    "file": "04_visit_note.pdf",
+    "page": 1,
+    "date": "2017-03-05",
+    "provider": "Dr. Wood",
+    "facility": "Lakeshore Regional Hospital"
+   },
+   {
+    "fact_type": "visit",
+    "file": "05_visit_note.pdf",
+    "page": 1,
+    "date": "2017-04-22",
+    "provider": "Dr. Knight",
+    "facility": "Riverside Neurology Group"
+   },
+   {
+    "fact_type": "visit",
+    "file": "06_visit_note.pdf",
+    "page": 1,
+    "date": "2017-06-16",
+    "provider": "Dr. Benton",
+    "facility": "Riverside Neurology Group"
+   },
+   {
+    "fact_type": "charge",
+    "file": "09_itemized_bill.pdf",
+    "page": 1,
+    "date": "2017-03-05",
+    "cpt": "74177",
+    "amount": 1434.9
+   },
+   {
+    "fact_type": "charge",
+    "file": "09_itemized_bill.pdf",
+    "page": 1,
+    "date": "2017-04-22",
+    "cpt": "88307",
+    "amount": 655.47
+   },
+   {
+    "fact_type": "charge",
+    "file": "09_itemized_bill.pdf",
+    "page": 1,
+    "date": "2017-06-16",
+    "cpt": "99214",
+    "amount": 194.15
+   }
+  ]
+ },
+ {
+  "external_id": "CC-1015",
+  "name": "Kaylee Williamson",
+  "dob": "1945-08-24",
+  "scenario": "non_qualifying_dx",
+  "expected_status": "not_qualified",
+  "facts": [
+   {
+    "fact_type": "exposure",
+    "file": "02_exposure_record.pdf",
+    "page": 1,
+    "start": "1987-06-29",
+    "end": "1991-01-29",
+    "kind": "residence"
+   },
+   {
+    "fact_type": "diagnosis",
+    "file": "03_diagnosis_record.pdf",
+    "page": 1,
+    "condition": "Essential (primary) hypertension",
+    "icd10": "I10",
+    "date": "2016-12-18"
+   },
+   {
+    "fact_type": "visit",
+    "file": "04_visit_note.pdf",
+    "page": 1,
+    "date": "2017-01-26",
+    "provider": "Dr. Brown",
+    "facility": "Cedar Valley Medical Center"
+   },
+   {
+    "fact_type": "visit",
+    "file": "05_visit_note.pdf",
+    "page": 1,
+    "date": "2017-03-15",
+    "provider": "Dr. Lam",
+    "facility": "Cedar Valley Medical Center"
+   },
+   {
+    "fact_type": "visit",
+    "file": "06_visit_note.pdf",
+    "page": 1,
+    "date": "2017-08-25",
+    "provider": "Dr. Deleon",
+    "facility": "Northfield Family Clinic"
+   },
+   {
+    "fact_type": "visit",
+    "file": "07_visit_note.pdf",
+    "page": 1,
+    "date": "2018-02-10",
+    "provider": "Dr. Baxter",
+    "facility": "Northfield Family Clinic"
+   },
+   {
+    "fact_type": "charge",
+    "file": "09_itemized_bill.pdf",
+    "page": 1,
+    "date": "2017-01-26",
+    "cpt": "99214",
+    "amount": 197.11
+   },
+   {
+    "fact_type": "charge",
+    "file": "09_itemized_bill.pdf",
+    "page": 1,
+    "date": "2017-03-15",
+    "cpt": "99204",
+    "amount": 364.55
+   },
+   {
+    "fact_type": "charge",
+    "file": "09_itemized_bill.pdf",
+    "page": 1,
+    "date": "2017-08-25",
+    "cpt": "99214",
+    "amount": 172.02
+   },
+   {
+    "fact_type": "charge",
+    "file": "09_itemized_bill.pdf",
+    "page": 1,
+    "date": "2018-02-10",
+    "cpt": "88307",
+    "amount": 626.09
+   }
+  ]
+ },
+ {
+  "external_id": "CC-1016",
+  "name": "Jenna Ross",
+  "dob": "1940-06-20",
+  "scenario": "outside_window",
+  "expected_status": "not_qualified",
+  "facts": [
+   {
+    "fact_type": "exposure",
+    "file": "02_exposure_record.pdf",
+    "page": 1,
+    "start": "2008-07-24",
+    "end": "2011-06-06",
+    "kind": "residence"
+   },
+   {
+    "fact_type": "diagnosis",
+    "file": "03_diagnosis_record.pdf",
+    "page": 1,
+    "condition": "Diffuse large B-cell lymphoma",
+    "icd10": "C83.30",
+    "date": "2023-03-26"
+   },
+   {
+    "fact_type": "visit",
+    "file": "04_visit_note.pdf",
+    "page": 1,
+    "date": "2023-05-04",
+    "provider": "Dr. Walters",
+    "facility": "St. Brendan Oncology Associates"
+   },
+   {
+    "fact_type": "visit",
+    "file": "05_visit_note.pdf",
+    "page": 1,
+    "date": "2023-10-05",
+    "provider": "Dr. Brown",
+    "facility": "St. Brendan Oncology Associates"
+   },
+   {
+    "fact_type": "visit",
+    "file": "06_visit_note.pdf",
+    "page": 1,
+    "date": "2023-12-09",
+    "provider": "Dr. Jones",
+    "facility": "Northfield Family Clinic"
+   },
+   {
+    "fact_type": "charge",
+    "file": "09_itemized_bill.pdf",
+    "page": 1,
+    "date": "2023-05-04",
+    "cpt": "99204",
+    "amount": 285.27
+   },
+   {
+    "fact_type": "charge",
+    "file": "09_itemized_bill.pdf",
+    "page": 1,
+    "date": "2023-10-05",
+    "cpt": "74177",
+    "amount": 1476.14
+   },
+   {
+    "fact_type": "charge",
+    "file": "09_itemized_bill.pdf",
+    "page": 1,
+    "date": "2023-12-09",
+    "cpt": "99204",
+    "amount": 296.42
+   }
+  ]
+ },
+ {
+  "external_id": "CC-1017",
+  "name": "Christopher Peterson",
+  "dob": "1961-10-04",
+  "scenario": "qualified",
+  "expected_status": "qualified",
+  "facts": [
+   {
+    "fact_type": "exposure",
+    "file": "02_exposure_record.pdf",
+    "page": 1,
+    "start": "1998-10-03",
+    "end": "2000-12-10",
+    "kind": "employment"
+   },
+   {
+    "fact_type": "diagnosis",
+    "file": "03_diagnosis_record.pdf",
+    "page": 1,
+    "condition": "Clear cell renal cell carcinoma, left kidney",
+    "icd10": "C64.2",
+    "date": "2012-10-10"
+   },
+   {
+    "fact_type": "visit",
+    "file": "04_visit_note.pdf",
+    "page": 1,
+    "date": "2012-11-18",
+    "provider": "Dr. Smith",
+    "facility": "Lakeshore Regional Hospital"
+   },
+   {
+    "fact_type": "visit",
+    "file": "05_visit_note.pdf",
+    "page": 1,
+    "date": "2012-12-10",
+    "provider": "Dr. Hernandez",
+    "facility": "Cedar Valley Medical Center"
+   },
+   {
+    "fact_type": "visit",
+    "file": "06_visit_note.pdf",
+    "page": 1,
+    "date": "2013-02-14",
+    "provider": "Dr. Garcia",
+    "facility": "Northfield Family Clinic"
+   },
+   {
+    "fact_type": "visit",
+    "file": "07_visit_note.pdf",
+    "page": 1,
+    "date": "2013-03-29",
+    "provider": "Dr. Cox",
+    "facility": "St. Brendan Oncology Associates"
+   },
+   {
+    "fact_type": "charge",
+    "file": "09_itemized_bill.pdf",
+    "page": 1,
+    "date": "2012-11-18",
+    "cpt": "99214",
+    "amount": 186.01
+   },
+   {
+    "fact_type": "charge",
+    "file": "09_itemized_bill.pdf",
+    "page": 1,
+    "date": "2012-12-10",
+    "cpt": "88307",
+    "amount": 644.47
+   },
+   {
+    "fact_type": "charge",
+    "file": "09_itemized_bill.pdf",
+    "page": 1,
+    "date": "2013-02-14",
+    "cpt": "74177",
+    "amount": 1436.78
+   },
+   {
+    "fact_type": "charge",
+    "file": "09_itemized_bill.pdf",
+    "page": 1,
+    "date": "2013-03-29",
+    "cpt": "99214",
+    "amount": 201.56
+   }
+  ]
+ },
+ {
+  "external_id": "CC-1018",
+  "name": "Shannon Mendez",
+  "dob": "1968-01-20",
+  "scenario": "self_reported_dx",
+  "expected_status": "needs_review",
+  "facts": [
+   {
+    "fact_type": "exposure",
+    "file": "02_exposure_record.pdf",
+    "page": 1,
+    "start": "1993-11-02",
+    "end": "1994-10-10",
+    "kind": "employment"
+   },
+   {
+    "fact_type": "visit",
+    "file": "04_visit_note.pdf",
+    "page": 1,
+    "date": "2009-07-01",
+    "provider": "Dr. Hernandez",
+    "facility": "Riverside Neurology Group"
+   },
+   {
+    "fact_type": "visit",
+    "file": "05_visit_note.pdf",
+    "page": 1,
+    "date": "2010-03-03",
+    "provider": "Dr. King",
+    "facility": "Cedar Valley Medical Center"
+   },
+   {
+    "fact_type": "visit",
+    "file": "06_visit_note.pdf",
+    "page": 1,
+    "date": "2010-04-12",
+    "provider": "Dr. Reed",
+    "facility": "St. Brendan Oncology Associates"
+   },
+   {
+    "fact_type": "visit",
+    "file": "07_visit_note.pdf",
+    "page": 1,
+    "date": "2010-05-21",
+    "provider": "Dr. Diaz",
+    "facility": "Northfield Family Clinic"
+   },
+   {
+    "fact_type": "charge",
+    "file": "09_itemized_bill.pdf",
+    "page": 1,
+    "date": "2009-07-01",
+    "cpt": "99214",
+    "amount": 212.34
+   },
+   {
+    "fact_type": "charge",
+    "file": "09_itemized_bill.pdf",
+    "page": 1,
+    "date": "2010-03-03",
+    "cpt": "88307",
+    "amount": 727.64
+   },
+   {
+    "fact_type": "charge",
+    "file": "09_itemized_bill.pdf",
+    "page": 1,
+    "date": "2010-04-12",
+    "cpt": "74177",
+    "amount": 1281.71
+   },
+   {
+    "fact_type": "charge",
+    "file": "09_itemized_bill.pdf",
+    "page": 1,
+    "date": "2010-05-21",
+    "cpt": "99285",
+    "amount": 2675.84
+   }
+  ]
+ },
+ {
+  "external_id": "CC-1019",
+  "name": "Samuel Kaiser",
+  "dob": "1956-03-25",
+  "scenario": "missing_exposure_doc",
+  "expected_status": "needs_review",
+  "facts": [
+   {
+    "fact_type": "diagnosis",
+    "file": "03_diagnosis_record.pdf",
+    "page": 1,
+    "condition": "Urothelial carcinoma of the bladder",
+    "icd10": "C67.9",
+    "date": "2013-07-18"
+   },
+   {
+    "fact_type": "visit",
+    "file": "04_visit_note.pdf",
+    "page": 1,
+    "date": "2013-07-31",
+    "provider": "Dr. Webb",
+    "facility": "St. Brendan Oncology Associates"
+   },
+   {
+    "fact_type": "visit",
+    "file": "05_visit_note.pdf",
+    "page": 1,
+    "date": "2014-01-07",
+    "provider": "Dr. Miller",
+    "facility": "St. Brendan Oncology Associates"
+   },
+   {
+    "fact_type": "charge",
+    "file": "09_itemized_bill.pdf",
+    "page": 1,
+    "date": "2013-07-31",
+    "cpt": "74177",
+    "amount": 1334.63
+   },
+   {
+    "fact_type": "charge",
+    "file": "09_itemized_bill.pdf",
+    "page": 1,
+    "date": "2014-01-07",
+    "cpt": "99204",
+    "amount": 357.77
+   }
+  ]
+ },
+ {
+  "external_id": "CC-1020",
+  "name": "Grant Baker",
+  "dob": "1974-12-23",
+  "scenario": "qualified",
+  "expected_status": "qualified",
+  "facts": [
+   {
+    "fact_type": "exposure",
+    "file": "02_exposure_record.pdf",
+    "page": 1,
+    "start": "1991-09-06",
+    "end": "1998-08-01",
+    "kind": "employment"
+   },
+   {
+    "fact_type": "diagnosis",
+    "file": "03_diagnosis_record.pdf",
+    "page": 1,
+    "condition": "Hepatocellular carcinoma",
+    "icd10": "C22.0",
+    "date": "2013-09-12"
+   },
+   {
+    "fact_type": "visit",
+    "file": "04_visit_note.pdf",
+    "page": 1,
+    "date": "2013-09-29",
+    "provider": "Dr. Martin",
+    "facility": "Lakeshore Regional Hospital"
+   },
+   {
+    "fact_type": "visit",
+    "file": "05_visit_note.pdf",
+    "page": 1,
+    "date": "2013-11-29",
+    "provider": "Dr. Johnson",
+    "facility": "Cedar Valley Medical Center"
+   },
+   {
+    "fact_type": "visit",
+    "file": "06_visit_note.pdf",
+    "page": 1,
+    "date": "2014-01-29",
+    "provider": "Dr. Tapia",
+    "facility": "Lakeshore Regional Hospital"
+   },
+   {
+    "fact_type": "visit",
+    "file": "07_visit_note.pdf",
+    "page": 1,
+    "date": "2014-02-20",
+    "provider": "Dr. Rice",
+    "facility": "Riverside Neurology Group"
+   },
+   {
+    "fact_type": "charge",
+    "file": "09_itemized_bill.pdf",
+    "page": 1,
+    "date": "2013-09-29",
+    "cpt": "99285",
+    "amount": 2240.39
+   },
+   {
+    "fact_type": "charge",
+    "file": "09_itemized_bill.pdf",
+    "page": 1,
+    "date": "2013-11-29",
+    "cpt": "99214",
+    "amount": 187.16
+   },
+   {
+    "fact_type": "charge",
+    "file": "09_itemized_bill.pdf",
+    "page": 1,
+    "date": "2014-01-29",
+    "cpt": "99214",
+    "amount": 201.88
+   },
+   {
+    "fact_type": "charge",
+    "file": "09_itemized_bill.pdf",
+    "page": 1,
+    "date": "2014-02-20",
+    "cpt": "99285",
+    "amount": 2176.97
+   }
+  ]
+ },
+ {
+  "external_id": "CC-1021",
+  "name": "Joshua Johnson",
+  "dob": "1951-06-08",
+  "scenario": "qualified",
+  "expected_status": "qualified",
+  "facts": [
+   {
+    "fact_type": "exposure",
+    "file": "02_exposure_record.pdf",
+    "page": 1,
+    "start": "1985-09-02",
+    "end": "1989-11-20",
+    "kind": "employment"
+   },
+   {
+    "fact_type": "diagnosis",
+    "file": "03_diagnosis_record.pdf",
+    "page": 1,
+    "condition": "Hepatocellular carcinoma",
+    "icd10": "C22.0",
+    "date": "2012-02-25"
+   },
+   {
+    "fact_type": "visit",
+    "file": "04_visit_note.pdf",
+    "page": 1,
+    "date": "2012-03-14",
+    "provider": "Dr. Good",
+    "facility": "Northfield Family Clinic"
+   },
+   {
+    "fact_type": "visit",
+    "file": "05_visit_note.pdf",
+    "page": 1,
+    "date": "2012-05-15",
+    "provider": "Dr. Boyer",
+    "facility": "St. Brendan Oncology Associates"
+   },
+   {
+    "fact_type": "visit",
+    "file": "06_visit_note.pdf",
+    "page": 1,
+    "date": "2012-06-07",
+    "provider": "Dr. Horton",
+    "facility": "Cedar Valley Medical Center"
+   },
+   {
+    "fact_type": "charge",
+    "file": "09_itemized_bill.pdf",
+    "page": 1,
+    "date": "2012-03-14",
+    "cpt": "74177",
+    "amount": 1444.45
+   },
+   {
+    "fact_type": "charge",
+    "file": "09_itemized_bill.pdf",
+    "page": 1,
+    "date": "2012-05-15",
+    "cpt": "74177",
+    "amount": 1458.52
+   },
+   {
+    "fact_type": "charge",
+    "file": "09_itemized_bill.pdf",
+    "page": 1,
+    "date": "2012-06-07",
+    "cpt": "88307",
+    "amount": 724.43
+   }
+  ]
+ },
+ {
+  "external_id": "CC-1022",
+  "name": "Jacob Jackson",
+  "dob": "1940-08-31",
+  "scenario": "dx_before_exposure",
+  "expected_status": "not_qualified",
+  "facts": [
+   {
+    "fact_type": "exposure",
+    "file": "02_exposure_record.pdf",
+    "page": 1,
+    "start": "1999-10-14",
+    "end": "2004-10-11",
+    "kind": "residence"
+   },
+   {
+    "fact_type": "diagnosis",
+    "file": "03_diagnosis_record.pdf",
+    "page": 1,
+    "condition": "Idiopathic Parkinson's disease",
+    "icd10": "G20",
+    "date": "1995-10-01"
+   },
+   {
+    "fact_type": "visit",
+    "file": "04_visit_note.pdf",
+    "page": 1,
+    "date": "1995-11-04",
+    "provider": "Dr. Patel",
+    "facility": "Northfield Family Clinic"
+   },
+   {
+    "fact_type": "visit",
+    "file": "05_visit_note.pdf",
+    "page": 1,
+    "date": "1995-11-26",
+    "provider": "Dr. Maxwell",
+    "facility": "Riverside Neurology Group"
+   },
+   {
+    "fact_type": "charge",
+    "file": "09_itemized_bill.pdf",
+    "page": 1,
+    "date": "1995-11-04",
+    "cpt": "99214",
+    "amount": 216.68
+   },
+   {
+    "fact_type": "charge",
+    "file": "09_itemized_bill.pdf",
+    "page": 1,
+    "date": "1995-11-26",
+    "cpt": "74177",
+    "amount": 1542.57
+   }
+  ]
+ },
+ {
+  "external_id": "CC-1023",
+  "name": "Daniel Cain",
+  "dob": "1961-03-19",
+  "scenario": "qualified",
+  "expected_status": "qualified",
+  "facts": [
+   {
+    "fact_type": "exposure",
+    "file": "02_exposure_record.pdf",
+    "page": 1,
+    "start": "1986-05-08",
+    "end": "1991-05-19",
+    "kind": "residence"
+   },
+   {
+    "fact_type": "diagnosis",
+    "file": "03_diagnosis_record.pdf",
+    "page": 1,
+    "condition": "Diffuse large B-cell lymphoma",
+    "icd10": "C83.30",
+    "date": "2016-01-21"
+   },
+   {
+    "fact_type": "visit",
+    "file": "04_visit_note.pdf",
+    "page": 1,
+    "date": "2016-02-27",
+    "provider": "Dr. Farrell",
+    "facility": "Riverside Neurology Group"
+   },
+   {
+    "fact_type": "visit",
+    "file": "05_visit_note.pdf",
+    "page": 1,
+    "date": "2016-04-28",
+    "provider": "Dr. Shaffer",
+    "facility": "St. Brendan Oncology Associates"
+   },
+   {
+    "fact_type": "visit",
+    "file": "06_visit_note.pdf",
+    "page": 1,
+    "date": "2016-06-24",
+    "provider": "Dr. Cardenas",
+    "facility": "St. Brendan Oncology Associates"
+   },
+   {
+    "fact_type": "visit",
+    "file": "07_visit_note.pdf",
+    "page": 1,
+    "date": "2017-01-09",
+    "provider": "Dr. Singh",
+    "facility": "St. Brendan Oncology Associates"
+   },
+   {
+    "fact_type": "charge",
+    "file": "09_itemized_bill.pdf",
+    "page": 1,
+    "date": "2016-02-27",
+    "cpt": "99204",
+    "amount": 370.71
+   },
+   {
+    "fact_type": "charge",
+    "file": "09_itemized_bill.pdf",
+    "page": 1,
+    "date": "2016-04-28",
+    "cpt": "74177",
+    "amount": 1623.29
+   },
+   {
+    "fact_type": "charge",
+    "file": "09_itemized_bill.pdf",
+    "page": 1,
+    "date": "2016-06-24",
+    "cpt": "88307",
+    "amount": 646.14
+   },
+   {
+    "fact_type": "charge",
+    "file": "09_itemized_bill.pdf",
+    "page": 1,
+    "date": "2017-01-09",
+    "cpt": "99214",
+    "amount": 201.82
+   }
+  ]
+ }
+]

@@ -59,9 +59,11 @@ def render_page(path: str, page_no: int, quote: str) -> tuple[bytes, bool]:
         found = False
         for part in quote.split(" … "):
             for line in [x.strip() for x in part.replace(". ", ".\n").split("\n") if len(x.strip()) > 6]:
-                for rect in page.search_for(line[:80]):
-                    page.add_highlight_annot(rect)
-                    found = True
+                words = line.split()
+                for i in range(0, len(words), 6):          # short word runs survive PDF line breaks
+                    for rect in page.search_for(" ".join(words[i:i + 6])):
+                        page.add_highlight_annot(rect)
+                        found = True
         return page.get_pixmap(dpi=110).tobytes("png"), found
 
 
@@ -79,12 +81,17 @@ with st.sidebar:
     user = st.selectbox("Signed in as", list(service.DEMO_USERS),
                         format_func=lambda u: f"{u} ({service.DEMO_USERS[u]})")
     role = service.DEMO_USERS[user]
-    page = st.radio("View", ["Claimants", "Claimant file", "Review queue", "Accuracy & cost", "Integrations & audit",
-                             "About"], label_visibility="collapsed")
+    views = ["Claimants", "Claimant file", "Review queue", "Accuracy & cost", "Integrations & audit", "About"]
+    qp = st.query_params        # deep links, e.g. ?view=Claimant+file&claimant=CC-1003
+    if "claimant" in qp and "claimant_ext" not in st.session_state:
+        st.session_state["claimant_ext"] = qp["claimant"]
+    page = st.radio("View", views, index=views.index(qp["view"]) if qp.get("view") in views else 0,
+                    label_visibility="collapsed")
     st.divider()
     case = rules.load_case(config.DEFAULT_CASE)
     st.caption(f"**Case:** {case['name']}")
-    st.caption(f"**LLM:** {config.CHAT_MODEL if llm.llm_enabled() else 'offline (pattern extractor)'}")
+    st.caption(f"**Live LLM:** {config.CHAT_MODEL if llm.llm_enabled() else 'off (offline mode)'}")
+    st.caption(f"**This dataset was extracted with:** {service.extraction_provenance()}")
     st.caption(f"**Database:** {config.DATABASE_URL.split(':')[0]}")
     st.caption("All records are synthetic. No real patient data.")
 
@@ -313,11 +320,12 @@ elif page == "Accuracy & cost":
             r = res[m]
             col.markdown(f"**{names[m]}**" + (f"  \n<small>{r['model']}</small>" if r.get("model") else ""),
                          unsafe_allow_html=True)
-            col.metric("Correct status", f"{r['status_accuracy']:.0%}")
+            col.metric("Correct status", f"{r['status_accuracy']:.0%}",
+                       help=f"{round(r['status_accuracy'] * r['claimants'])} of {r['claimants']} claimants")
             col.metric("False qualifications", len(r["false_qualifications"]),
                        help="Claimants marked qualified who should not be. The costly error.")
-            col.metric("Verified-fact recall", f"{r['facts']['verified']['overall']['recall']:.0%}")
-            col.metric("Verified-fact precision", f"{r['facts']['verified']['overall']['precision']:.0%}")
+            col.metric("Verified-fact recall", f"{r['facts']['verified']['overall']['recall']:.1%}")
+            col.metric("Verified-fact precision", f"{r['facts']['verified']['overall']['precision']:.1%}")
 
         st.subheader("Recall by fact type (verified facts)")
         types = ["exposure", "diagnosis", "visit", "charge"]

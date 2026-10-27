@@ -1,0 +1,188 @@
+{
+ "method": "pattern",
+ "model": null,
+ "claimants": 24,
+ "facts": {
+  "all": {
+   "exposure": {
+    "precision": 1.0,
+    "recall": 0.409,
+    "f1": 0.581,
+    "tp": 9,
+    "predicted": 9,
+    "gold": 22
+   },
+   "diagnosis": {
+    "precision": 1.0,
+    "recall": 0.545,
+    "f1": 0.706,
+    "tp": 12,
+    "predicted": 12,
+    "gold": 22
+   },
+   "visit": {
+    "precision": 1.0,
+    "recall": 0.728,
+    "f1": 0.843,
+    "tp": 59,
+    "predicted": 59,
+    "gold": 81
+   },
+   "charge": {
+    "precision": 1.0,
+    "recall": 1.0,
+    "f1": 1.0,
+    "tp": 81,
+    "predicted": 81,
+    "gold": 81
+   },
+   "overall": {
+    "precision": 1.0,
+    "recall": 0.782,
+    "f1": 0.877,
+    "tp": 161,
+    "predicted": 161,
+    "gold": 206
+   }
+  },
+  "verified": {
+   "exposure": {
+    "precision": 1.0,
+    "recall": 0.409,
+    "f1": 0.581,
+    "tp": 9,
+    "predicted": 9,
+    "gold": 22
+   },
+   "diagnosis": {
+    "precision": 1.0,
+    "recall": 0.545,
+    "f1": 0.706,
+    "tp": 12,
+    "predicted": 12,
+    "gold": 22
+   },
+   "visit": {
+    "precision": 1.0,
+    "recall": 0.728,
+    "f1": 0.843,
+    "tp": 59,
+    "predicted": 59,
+    "gold": 81
+   },
+   "charge": {
+    "precision": 1.0,
+    "recall": 1.0,
+    "f1": 1.0,
+    "tp": 81,
+    "predicted": 81,
+    "gold": 81
+   },
+   "overall": {
+    "precision": 1.0,
+    "recall": 0.782,
+    "f1": 0.877,
+    "tp": 161,
+    "predicted": 161,
+    "gold": 206
+   }
+  }
+ },
+ "status_accuracy": 0.375,
+ "confusion": {
+  "qualified -> needs_review": 10,
+  "not_qualified -> not_qualified": 3,
+  "not_qualified -> needs_review": 5,
+  "needs_review -> needs_review": 4,
+  "qualified -> qualified": 2
+ },
+ "false_qualifications": [],
+ "missed": [
+  {
+   "claimant": "CC-1000",
+   "expected": "qualified",
+   "got": "needs_review"
+  },
+  {
+   "claimant": "CC-1001",
+   "expected": "qualified",
+   "got": "needs_review"
+  },
+  {
+   "claimant": "CC-1003",
+   "expected": "qualified",
+   "got": "needs_review"
+  },
+  {
+   "claimant": "CC-1005",
+   "expected": "not_qualified",
+   "got": "needs_review"
+  },
+  {
+   "claimant": "CC-1006",
+   "expected": "qualified",
+   "got": "needs_review"
+  },
+  {
+   "claimant": "CC-1010",
+   "expected": "not_qualified",
+   "got": "needs_review"
+  },
+  {
+   "claimant": "CC-1011",
+   "expected": "qualified",
+   "got": "needs_review"
+  },
+  {
+   "claimant": "CC-1012",
+   "expected": "qualified",
+   "got": "needs_review"
+  },
+  {
+   "claimant": "CC-1014",
+   "expected": "qualified",
+   "got": "needs_review"
+  },
+  {
+   "claimant": "CC-1015",
+   "expected": "not_qualified",
+   "got": "needs_review"
+  },
+  {
+   "claimant": "CC-1016",
+   "expected": "not_qualified",
+   "got": "needs_review"
+  },
+  {
+   "claimant": "CC-1017",
+   "expected": "qualified",
+   "got": "needs_review"
+  },
+  {
+   "claimant": "CC-1020",
+   "expected": "qualified",
+   "got": "needs_review"
+  },
+  {
+   "claimant": "CC-1021",
+   "expected": "qualified",
+   "got": "needs_review"
+  },
+  {
+   "claimant": "CC-1022",
+   "expected": "not_qualified",
+   "got": "needs_review"
+  }
+ ],
+ "llm_usage": {
+  "calls": 0,
+  "input_tokens": 0,
+  "output_tokens": 0,
+  "avg_latency_s": 0.0,
+  "seconds_per_claimant": 0.0,
+  "actual_cost_usd": 0.0,
+  "reference_cost_usd": 0.0,
+  "reference_cost_per_claimant_usd": 0.0,
+  "reference_price": "paid API reference: $0.15/$0.6 per 1M tokens in/out"
+ }
+}

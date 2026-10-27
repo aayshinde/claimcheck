@@ -1,0 +1,245 @@
+{
+ "matters": {
+  "CC-1000": {
+   "matter_id": "CC-1000",
+   "client_name": "Chris Curtis",
+   "dob": "1954-07-11",
+   "case_code": "cedar_creek",
+   "intake_date": null,
+   "claimcheck_status": "qualified",
+   "attorney_decision": null,
+   "notes": []
+  },
+  "CC-1001": {
+   "matter_id": "CC-1001",
+   "client_name": "Jeffrey Jones",
+   "dob": "1956-03-21",
+   "case_code": "cedar_creek",
+   "intake_date": null,
+   "claimcheck_status": "qualified",
+   "attorney_decision": null,
+   "notes": []
+  },
+  "CC-1002": {
+   "matter_id": "CC-1002",
+   "client_name": "Theresa Ray",
+   "dob": "1945-10-20",
+   "case_code": "cedar_creek",
+   "intake_date": null,
+   "claimcheck_status": "not_qualified",
+   "attorney_decision": null,
+   "notes": []
+  },
+  "CC-1003": {
+   "matter_id": "CC-1003",
+   "client_name": "Bruce Parker",
+   "dob": "1965-06-04",
+   "case_code": "cedar_creek",
+   "intake_date": null,
+   "claimcheck_status": "qualified",
+   "attorney_decision": null,
+   "notes": []
+  },
+  "CC-1004": {
+   "matter_id": "CC-1004",
+   "client_name": "Amy Brown",
+   "dob": "1972-10-15",
+   "case_code": "cedar_creek",
+   "intake_date": null,
+   "claimcheck_status": "not_qualified",
+   "attorney_decision": null,
+   "notes": []
+  },
+  "CC-1005": {
+   "matter_id": "CC-1005",
+   "client_name": "Elijah Bauer",
+   "dob": "1940-12-16",
+   "case_code": "cedar_creek",
+   "intake_date": null,
+   "claimcheck_status": "not_qualified",
+   "attorney_decision": null,
+   "notes": []
+  },
+  "CC-1006": {
+   "matter_id": "CC-1006",
+   "client_name": "Donna Baird",
+   "dob": "1974-02-02",
+   "case_code": "cedar_creek",
+   "intake_date": null,
+   "claimcheck_status": "qualified",
+   "attorney_decision": null,
+   "notes": []
+  },
+  "CC-1007": {
+   "matter_id": "CC-1007",
+   "client_name": "John Williams",
+   "dob": "1969-12-15",
+   "case_code": "cedar_creek",
+   "intake_date": null,
+   "claimcheck_status": "needs_review",
+   "attorney_decision": null,
+   "notes": []
+  },
+  "CC-1008": {
+   "matter_id": "CC-1008",
+   "client_name": "Michael Wheeler",
+   "dob": "1943-10-04",
+   "case_code": "cedar_creek",
+   "intake_date": null,
+   "claimcheck_status": "needs_review",
+   "attorney_decision": null,
+   "notes": []
+  },
+  "CC-1009": {
+   "matter_id": "CC-1009",
+   "client_name": "Kara Beck",
+   "dob": "1963-01-25",
+   "case_code": "cedar_creek",
+   "intake_date": null,
+   "claimcheck_status": "qualified",
+   "attorney_decision": null,
+   "notes": []
+  },
+  "CC-1010": {
+   "matter_id": "CC-1010",
+   "client_name": "Dominique Cruz",
+   "dob": "1955-01-16",
+   "case_code": "cedar_creek",
+   "intake_date": null,
+   "claimcheck_status": "not_qualified",
+   "attorney_decision": null,
+   "notes": []
+  },
+  "CC-1011": {
+   "matter_id": "CC-1011",
+   "client_name": "Randy Anderson",
+   "dob": "1968-02-28",
+   "case_code": "cedar_creek",
+   "intake_date": null,
+   "claimcheck_status": "qualified",
+   "attorney_decision": null,
+   "notes": []
+  },
+  "CC-1012": {
+   "matter_id": "CC-1012",
+   "client_name": "Joshua Ware",
+   "dob": "1953-01-17",
+   "case_code": "cedar_creek",
+   "intake_date": null,
+   "claimcheck_status": "qualified",
+   "attorney_decision": null,
+   "notes": []
+  },
+  "CC-1013": {
+   "matter_id": "CC-1013",
+   "client_name": "Ian Henson",
+   "dob": "1962-01-20",
+   "case_code": "cedar_creek",
+   "intake_date": null,
+   "claimcheck_status": "not_qualified",
+   "attorney_decision": null,
+   "notes": []
+  },
+  "CC-1014": {
+   "matter_id": "CC-1014",
+   "client_name": "Mr. Dennis Smith",
+   "dob": "1947-08-29",
+   "case_code": "cedar_creek",
+   "intake_date": null,
+   "claimcheck_status": "qualified",
+   "attorney_decision": null,
+   "notes": []
+  },
+  "CC-1015": {
+   "matter_id": "CC-1015",
+   "client_name": "Kaylee Williamson",
+   "dob": "1945-08-24",
+   "case_code": "cedar_creek",
+   "intake_date": null,
+   "claimcheck_status": "needs_review",
+   "attorney_decision": null,
+   "notes": []
+  },
+  "CC-1016": {
+   "matter_id": "CC-1016",
+   "client_name": "Jenna Ross",
+   "dob": "1940-06-20",
+   "case_code": "cedar_creek",
+   "intake_date": null,
+   "claimcheck_status": "not_qualified",
+   "attorney_decision": null,
+   "notes": []
+  },
+  "CC-1017": {
+   "matter_id": "CC-1017",
+   "client_name": "Christopher Peterson",
+   "dob": "1961-10-04",
+   "case_code": "cedar_creek",
+   "intake_date": null,
+   "claimcheck_status": "qualified",
+   "attorney_decision": null,
+   "notes": []
+  },
+  "CC-1018": {
+   "matter_id": "CC-1018",
+   "client_name": "Shannon Mendez",
+   "dob": "1968-01-20",
+   "case_code": "cedar_creek",
+   "intake_date": null,
+   "claimcheck_status": "needs_review",
+   "attorney_decision": null,
+   "notes": []
+  },
+  "CC-1019": {
+   "matter_id": "CC-1019",
+   "client_name": "Samuel Kaiser",
+   "dob": "1956-03-25",
+   "case_code": "cedar_creek",
+   "intake_date": null,
+   "claimcheck_status": "needs_review",
+   "attorney_decision": null,
+   "notes": []
+  },
+  "CC-1020": {
+   "matter_id": "CC-1020",
+   "client_name": "Grant Baker",
+   "dob": "1974-12-23",
+   "case_code": "cedar_creek",
+   "intake_date": null,
+   "claimcheck_status": "qualified",
+   "attorney_decision": null,
+   "notes": []
+  },
+  "CC-1021": {
+   "matter_id": "CC-1021",
+   "client_name": "Joshua Johnson",
+   "dob": "1951-06-08",
+   "case_code": "cedar_creek",
+   "intake_date": null,
+   "claimcheck_status": "qualified",
+   "attorney_decision": null,
+   "notes": []
+  },
+  "CC-1022": {
+   "matter_id": "CC-1022",
+   "client_name": "Jacob Jackson",
+   "dob": "1940-08-31",
+   "case_code": "cedar_creek",
+   "intake_date": null,
+   "claimcheck_status": "not_qualified",
+   "attorney_decision": null,
+   "notes": []
+  },
+  "CC-1023": {
+   "matter_id": "CC-1023",
+   "client_name": "Daniel Cain",
+   "dob": "1961-03-19",
+   "case_code": "cedar_creek",
+   "intake_date": null,
+   "claimcheck_status": "qualified",
+   "attorney_decision": null,
+   "notes": []
+  }
+ },
+ "events": []
+}

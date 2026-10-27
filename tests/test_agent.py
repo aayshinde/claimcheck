@@ -36,3 +36,21 @@ def test_only_attorney_approves_requests(demo, ids):
     with pytest.raises(PermissionError):
         service.review_request(rid, True, "j.chen", "paralegal")
     assert service.review_request(rid, True, "a.rivera", "attorney")["status"] == "approved"
+
+
+def test_silent_llm_falls_back_to_planner_summary(demo, ids, monkeypatch):
+    from types import SimpleNamespace
+
+    from claimcheck import llm
+    calls = []
+
+    def fake_chat(msgs, purpose, claimant_id=None, tools=None, **kw):
+        calls.append(1)
+        return SimpleNamespace(content="", tool_calls=None)   # a small model that stops without a word
+
+    monkeypatch.setattr(llm, "chat", fake_chat)
+    cid = ids[_scenario("self_reported_dx")[0]]
+    r = run_agent(cid, "llm")
+    assert len(calls) == 3                                     # first try + two nudges
+    assert "rule-based planner" in r["summary"]
+    assert any("safety net" in s["tool"] for s in r["steps"])  # required draft still created

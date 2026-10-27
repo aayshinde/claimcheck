@@ -38,10 +38,11 @@ def _log(purpose: str, model: str, claimant_id, usage, latency_ms: int, ok: bool
 
 
 def chat(messages: list[dict], purpose: str, claimant_id: int | None = None, tools: list | None = None,
-         json_mode: bool = False, temperature: float = 0.0, max_tokens: int = 1200):
+         json_mode: bool = False, temperature: float = 0.0, max_tokens: int = 1200, model: str | None = None):
     """One chat completion, logged. Returns the message object (content and/or tool_calls).
     max_tokens caps runaway generations (small models occasionally loop) so one page can't stall a batch."""
-    kw = {"model": config.CHAT_MODEL, "messages": messages, "temperature": temperature, "max_tokens": max_tokens}
+    model = model or config.CHAT_MODEL
+    kw = {"model": model, "messages": messages, "temperature": temperature, "max_tokens": max_tokens}
     if tools:
         kw["tools"] = tools
     if json_mode:
@@ -50,9 +51,9 @@ def chat(messages: list[dict], purpose: str, claimant_id: int | None = None, too
     try:
         r = client().chat.completions.create(**kw)
     except Exception:
-        _log(purpose, config.CHAT_MODEL, claimant_id, None, int((time.time() - t0) * 1000), ok=False)
+        _log(purpose, model, claimant_id, None, int((time.time() - t0) * 1000), ok=False)
         raise
-    _log(purpose, config.CHAT_MODEL, claimant_id, r.usage, int((time.time() - t0) * 1000))
+    _log(purpose, model, claimant_id, r.usage, int((time.time() - t0) * 1000))
     return r.choices[0].message
 
 

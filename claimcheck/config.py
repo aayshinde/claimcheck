@@ -31,6 +31,7 @@ DATABASE_URL = os.getenv("DATABASE_URL", f"sqlite:///{DATA_DIR / 'claimcheck.db'
 LLM_BASE_URL = os.getenv("LLM_BASE_URL", "")             # e.g. http://localhost:11434/v1
 LLM_API_KEY = os.getenv("LLM_API_KEY", "local")
 CHAT_MODEL = os.getenv("CHAT_MODEL", "qwen2.5:3b")
+AGENT_MODEL = os.getenv("AGENT_MODEL", CHAT_MODEL)       # tool calling benefits from a bigger model than extraction
 EMBED_MODEL = os.getenv("EMBED_MODEL", "hash")           # "hash" (offline) or an embedding model, e.g. nomic-embed-text
 EMBED_DIM = 768                                          # nomic-embed-text size; the hash embedder matches it
 LLM_TIMEOUT = float(os.getenv("LLM_TIMEOUT", "90"))

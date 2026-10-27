@@ -15,7 +15,7 @@ import json
 
 from sqlalchemy import select
 
-from claimcheck import llm, search
+from claimcheck import config, llm, search
 from claimcheck.db import AgentRun, Claimant, Document, Fact, RecordsRequest, RuleResult, audit, session_scope
 
 MAX_STEPS = 8
@@ -112,10 +112,13 @@ class Tools:
 
 
 # ----------------------------------------------------------------------------------------------- planners
-def _offline_plan(t: Tools) -> tuple[list[dict], str]:
+def _offline_plan(t: Tools, dry_run: bool = False) -> tuple[list[dict], str]:
+    """Deterministic planner. dry_run=True only reads (no drafts, no flags), used to write a fallback summary."""
     steps, summary = [], []
 
     def run(name, **args):
+        if dry_run and name in ("draft_records_request", "flag_for_review"):
+            return {"dry_run": True}
         res = t.call(name, args)
         steps.append({"tool": name, "args": args, "result": res})
         return res
@@ -169,11 +172,18 @@ def _offline_plan(t: Tools) -> tuple[list[dict], str]:
 def _llm_plan(t: Tools, case_name: str) -> tuple[list[dict], str]:
     msgs = [{"role": "system", "content": SYSTEM.format(case=case_name)},
             {"role": "user", "content": "Review this claimant's file and prepare next steps."}]
-    steps = []
+    steps, nudges = [], 0
     for _ in range(MAX_STEPS):
-        m = llm.chat(msgs, "agent", t.cid, tools=TOOLS)
+        m = llm.chat(msgs, "agent", t.cid, tools=TOOLS, model=config.AGENT_MODEL)
         if not m.tool_calls:
-            return steps, m.content or ""
+            if (m.content or "").strip() or nudges >= 2:
+                return steps, (m.content or "").strip()
+            nudges += 1            # small models sometimes stop silently; ask once or twice to finish the job
+            msgs += [{"role": "assistant", "content": ""},
+                     {"role": "user", "content": "You stopped early. Call any remaining tools you need (search_records, "
+                                                 "find_treatment_gaps, draft_records_request, flag_for_review), then "
+                                                 "write the bullet-point summary for the attorney."}]
+            continue
         msgs.append({"role": "assistant", "content": m.content or "",
                      "tool_calls": [tc.model_dump() for tc in m.tool_calls]})
         for tc in m.tool_calls:
@@ -203,6 +213,9 @@ def run_agent(claimant_id: int, mode: str = "auto", actor: str = "case_review_ag
         if mode == "llm":
             steps, summary = _llm_plan(t, case_name)
             steps += _ensure_requests(t, steps)
+            if not summary:
+                _, fallback = _offline_plan(Tools(t.cid, t.actor + ":summary"), dry_run=True)
+                summary = "(The model returned no summary; this one is from the rule-based planner.)\n" + fallback
         else:
             steps, summary = _offline_plan(t)
     except Exception as e:   # LLM down or malformed tool calls: fall back, and say so

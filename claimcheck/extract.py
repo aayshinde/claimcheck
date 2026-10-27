@@ -75,7 +75,9 @@ def verify(fact_type: str, value: dict, quote: str, page_text: str) -> tuple[boo
             return False, score
     if fact_type == "diagnosis":
         code = str(value.get("icd10") or "").upper()
-        if not code or code.lower() not in norm(" ".join(parts)):
+        if not ICD_RE.fullmatch(code):          # e.g. OCR read "I10" as "110": faithful to the page, still not valid
+            return False, score
+        if code.lower() not in norm(" ".join(parts)):
             return False, score
     if fact_type == "charge" and value.get("amount") is not None:
         if f"{float(value['amount']):,.2f}" not in " ".join(parts):
@@ -177,6 +179,9 @@ Rules:
 - Dates as YYYY-MM-DD. Amounts as numbers without $.
 - An intake questionnaire is self-reported: use "claimed_condition" there, never "diagnosis".
 - Exposure = a period living at an address (utility/residence records) or working at a site (employment records).
+- Medical shorthand: a diagnosis may be labelled "Impression", "Assessment", "Final diagnosis" or "Dx"; "Dx code" is the
+  ICD-10 code; for pathology, the "signed out" or report date is the diagnosis date. "DOS" = date of service (a visit),
+  "CC" = chief complaint (visit reason), "A/P" = assessment and plan.
 
 PAGE TEXT:
 \"\"\"{text}\"\"\""""

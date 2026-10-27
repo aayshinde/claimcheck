@@ -46,3 +46,11 @@ def test_locate_quote_only_grounds_values_on_the_page():
     q = locate_quote("exposure", good, PAGE)
     assert q and verify("exposure", good, q, PAGE)[0]
     assert locate_quote("exposure", {"start": "1991-03-15", "end": "1996-06-02"}, PAGE) == ""
+
+
+def test_invalid_icd_code_not_verified():
+    page = "Date of visit: 12/18/2016. Assessment: Essential hypertension (ICD-10 110), diagnosed at this visit."
+    v = {"icd10": "110", "date": "2016-12-18", "condition": "Essential hypertension"}
+    assert not verify("diagnosis", v, page, page)[0]
+    ok_page = page.replace("110", "I10")
+    assert verify("diagnosis", {**v, "icd10": "I10"}, ok_page, ok_page)[0]

@@ -125,7 +125,7 @@ def make_scanned(path: Path, rng: random.Random) -> None:
         img = Image.open(io.BytesIO(pix.tobytes("png"))).convert("L")
         img = img.rotate(rng.uniform(-1.2, 1.2), fillcolor=255, expand=False).filter(ImageFilter.GaussianBlur(0.5))
         buf = io.BytesIO()
-        img.save(buf, format="PNG")
+        img.save(buf, format="JPEG", quality=70)   # scans are JPEG-like; PNG made each page ~3.7 MB
         p = out.new_page(width=page.rect.width, height=page.rect.height)
         p.insert_image(p.rect, stream=buf.getvalue())
     src.close()
