@@ -129,11 +129,14 @@ if page == "Overview":
     st.markdown("#### Checks every claimant's records against the case rules in seconds, shows the proof, "
                 "and leaves the decision to a person.")
     st.caption(f"Demo: {case['name']}. All people and records are made up.")
+    st.info("📁 **A claimant file** is one person's folder of records: the questionnaire they filled in, proof of "
+            "where they lived or worked, their doctor's reports and their medical bills. Someone has to read every "
+            "folder to decide if the person qualifies for the case. ClaimCheck does that first read.")
 
     counts = pd.Series([c["status"] for c in summary]).value_counts()
     n_q, n_r, n_n = (int(counts.get(k, 0)) for k in ("qualified", "needs_review", "not_qualified"))
     m = st.columns(4)
-    m[0].metric("📂 Claimant files reviewed", len(summary))
+    m[0].metric("📁 Claimant files checked", len(summary))
     m[1].metric("✅ Ready for attorney sign-off", n_q)
     m[2].metric("⚠️ Need a person to check", n_r)
     m[3].metric("❌ Don't qualify", n_n)
@@ -145,7 +148,12 @@ if page == "Overview":
                    "to a person instead of guessing.")
 
     st.subheader("⏱️ Time it saves")
-    minutes = st.slider("Your estimate: minutes a paralegal spends on a first-pass review of one file", 10, 120, 45, 5)
+    st.markdown("How long does it take a paralegal to read one claimant file by hand? "
+                "**Pick a time below**; the numbers update.")
+    choices = {"15 min": 15, "30 min": 30, "45 min": 45, "1 hour": 60, "1.5 hours": 90, "2 hours": 120}
+    picked = st.segmented_control("Time per file by hand", list(choices), default="45 min",
+                                  label_visibility="collapsed")
+    minutes = choices.get(picked or "45 min", 45)
     secs = (best or {}).get("llm_usage", {}).get("seconds_per_claimant") or 10
     t = st.columns(3)
     t[0].metric(f"By hand, these {len(summary)} files", f"{len(summary) * minutes / 60:.0f} hours")
