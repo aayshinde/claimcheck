@@ -1,0 +1,59 @@
+# docker compose up --build
+#   API        http://localhost:8000/docs
+#   Dashboard  http://localhost:8501
+#   Mock CMS   http://localhost:8001/docs
+# For a local LLM, run Ollama on the host and set LLM_BASE_URL=http://host.docker.internal:11434/v1 in .env
+services:
+  db:
+    image: pgvector/pgvector:pg17
+    environment:
+      POSTGRES_USER: claimcheck
+      POSTGRES_PASSWORD: claimcheck
+      POSTGRES_DB: claimcheck
+    ports: ["5432:5432"]
+    volumes: [pgdata:/var/lib/postgresql/data]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U claimcheck"]
+      interval: 3s
+      retries: 20
+
+  seed:
+    build: .
+    env_file: [{path: .env, required: false}]
+    environment: &env
+      DATABASE_URL: postgresql+psycopg://claimcheck:claimcheck@db:5432/claimcheck
+      DATA_DIR: /app/data
+      CMS_BASE_URL: http://cms:8001
+      WEBHOOK_URL: http://cms:8001/webhooks/claimcheck
+    volumes: [appdata:/app/data]
+    depends_on: {db: {condition: service_healthy}}
+    command: python -m claimcheck.pipeline demo
+
+  api:
+    build: .
+    env_file: [{path: .env, required: false}]
+    environment: *env
+    volumes: [appdata:/app/data]
+    ports: ["8000:8000"]
+    depends_on: {seed: {condition: service_completed_successfully}}
+
+  dashboard:
+    build: .
+    env_file: [{path: .env, required: false}]
+    environment: *env
+    volumes: [appdata:/app/data]
+    ports: ["8501:8501"]
+    depends_on: {seed: {condition: service_completed_successfully}}
+    command: streamlit run app.py --server.port 8501 --server.address 0.0.0.0
+
+  cms:
+    build: .
+    environment: *env
+    volumes: [appdata:/app/data]
+    ports: ["8001:8001"]
+    depends_on: {seed: {condition: service_completed_successfully}}
+    command: uvicorn claimcheck.integrations.mock_cms:app --host 0.0.0.0 --port 8001
+
+volumes:
+  pgdata:
+  appdata:
