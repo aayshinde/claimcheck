@@ -97,6 +97,11 @@
   "qualified -> needs_review": 1
  },
  "false_qualifications": [],
+ "inconsistencies": {
+  "planted": 6,
+  "found": 5,
+  "false_alarms": 0
+ },
  "missed": [
   {
    "claimant": "CC-1013",
@@ -115,14 +120,14 @@
   }
  ],
  "llm_usage": {
-  "calls": 190,
-  "input_tokens": 113626,
-  "output_tokens": 21844,
-  "avg_latency_s": 6.44,
-  "seconds_per_claimant": 51.0,
+  "calls": 173,
+  "input_tokens": 101253,
+  "output_tokens": 21378,
+  "avg_latency_s": 5.85,
+  "seconds_per_claimant": 42.1,
   "actual_cost_usd": 0.0,
-  "reference_cost_usd": 0.0302,
-  "reference_cost_per_claimant_usd": 0.00126,
+  "reference_cost_usd": 0.028,
+  "reference_cost_per_claimant_usd": 0.00117,
   "reference_price": "paid API reference: $0.15/$0.6 per 1M tokens in/out"
  }
 }

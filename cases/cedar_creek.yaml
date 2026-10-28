@@ -38,3 +38,25 @@ rules:
     label: Qualifying diagnosis documented in a medical record
   - id: diagnosis_after_exposure
     label: Diagnosis made after exposure began
+
+# FICTIONAL settlement grid, for illustration only. Real grids come from the settlement agreement.
+# points = base points for the diagnosis x exposure-length multiplier; value = points x dollars_per_point
+settlement_grid:
+  dollars_per_point: 1500
+  base_points:
+    C64: 100
+    C65: 100
+    C67: 90
+    C22: 110
+    C82: 95
+    C83: 95
+    C85: 95
+    G20: 70
+  exposure_multiplier:        # by years of documented exposure inside the window (highest matching row wins)
+    - {min_years: 0, factor: 0.5}
+    - {min_years: 1, factor: 1.0}
+    - {min_years: 5, factor: 1.25}
+  tiers:                      # by points (first matching row wins)
+    - {name: Tier 1, min_points: 110}
+    - {name: Tier 2, min_points: 80}
+    - {name: Tier 3, min_points: 0}

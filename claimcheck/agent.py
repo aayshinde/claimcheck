@@ -19,6 +19,10 @@ from claimcheck import config, llm, search
 from claimcheck.db import AgentRun, Claimant, Document, Fact, RecordsRequest, RuleResult, audit, session_scope
 
 MAX_STEPS = 8
+# Requests are limited to record types the firm's retrieval process handles (a free-text field let a small model ask for
+# CT scans when the gap was a pathology report).
+RECORD_TYPES = ["residential water service history, 1985-2005", "employment records (dates and work location)",
+                "pathology report and diagnosing physician's notes", "complete medical records"]
 
 TOOLS = [
     {"type": "function", "function": {
@@ -38,7 +42,7 @@ TOOLS = [
         "description": "Draft (not send) a request for missing records. An attorney must approve it.",
         "parameters": {"type": "object", "properties": {
             "provider": {"type": "string", "description": "Who holds the records, e.g. Cedar Creek Municipal Water Utility"},
-            "record_type": {"type": "string"}, "reason": {"type": "string"}},
+            "record_type": {"type": "string", "enum": RECORD_TYPES}, "reason": {"type": "string"}},
             "required": ["provider", "record_type", "reason"]}}},
     {"type": "function", "function": {
         "name": "flag_for_review", "description": "Leave a note for the reviewing paralegal/attorney.",
@@ -78,6 +82,8 @@ class Tools:
                 for g in search.treatment_gaps(self.cid, int(min_days or 90))]
 
     def draft_records_request(self, provider: str, record_type: str, reason: str) -> dict:
+        if record_type not in RECORD_TYPES:
+            return {"error": f"record_type must be one of: {RECORD_TYPES}"}
         with session_scope() as s:
             c = s.get(Claimant, self.cid)
             dup = s.scalar(select(RecordsRequest).where(RecordsRequest.claimant_id == self.cid,
@@ -86,9 +92,11 @@ class Tools:
             if dup:
                 return {"request_id": dup.id, "status": dup.status, "note": "a request for this record already exists"}
             body = (f"To the Records Custodian, {provider}:\n\nOn behalf of our client {c.name} "
-                    f"(DOB {c.dob or 'on file'}), and pursuant to the enclosed signed authorization, we request "
-                    f"{record_type}.\n\nPurpose: {reason}\n\nPlease send certified copies to our office. "
-                    f"Thank you.\n\n[DRAFT prepared by ClaimCheck for attorney review]")
+                    f"(DOB {c.dob or 'on file'}), and pursuant to the enclosed HIPAA-compliant authorization signed by "
+                    f"the client (45 CFR 164.508), we request {record_type}.\n\nPurpose: {reason}\n\n"
+                    f"Please send certified copies to our office. Thank you.\n\n"
+                    f"[DRAFT prepared by ClaimCheck for attorney review; route through the firm's records-retrieval "
+                    f"process once approved]")
             r = RecordsRequest(claimant_id=self.cid, provider=provider, record_type=record_type, reason=reason,
                                body=body, created_by=self.actor)
             s.add(r)
@@ -138,7 +146,7 @@ def _offline_plan(t: Tools, dry_run: bool = False) -> tuple[list[dict], str]:
         hits = run("search_records", query="Cedar Creek water service address employment dates")
         if not types & {"utility_record", "employment_record"}:
             run("draft_records_request", provider="Cedar Creek Municipal Water Utility",
-                record_type="residential water service history, 1985-2005",
+                record_type=RECORD_TYPES[0],
                 reason="Intake reports residence in Cedar Creek, but no utility or employment record is on file.")
             summary.append("No exposure record on file: drafted a request to the Cedar Creek water utility.")
         else:
@@ -149,7 +157,7 @@ def _offline_plan(t: Tools, dry_run: bool = False) -> tuple[list[dict], str]:
         run("search_records", query="diagnosis pathology report ICD-10 assessment")
         if not types & {"pathology_report", "specialist_note"}:
             run("draft_records_request", provider=facility,
-                record_type="pathology report and diagnosing physician's notes",
+                record_type=RECORD_TYPES[2],
                 reason=f"Claimant self-reports {claimed or 'a qualifying condition'}; no medical record of the diagnosis is on file.")
             summary.append(f"Diagnosis only self-reported ({claimed or 'unspecified'}): drafted a records request to {facility}.")
         else:

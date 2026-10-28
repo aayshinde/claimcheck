@@ -73,6 +73,18 @@ def evaluate(method_label: str | None = None, write: bool = True) -> dict:
                                  func.coalesce(func.sum(LLMCall.cost_usd), 0.0))).one()
         model = s.scalar(select(LLMCall.model).where(LLMCall.purpose == "extract").limit(1))
 
+    # inconsistency detection: planted intake-vs-records mismatches found / false alarms
+    from claimcheck import insights, service
+    planted = found = false_alarms = 0
+    for c in service.claimant_summary():
+        g = gold.get(c["external_id"])
+        if g is None:
+            continue
+        hits = insights.discrepancies(service.claimant_detail(c["id"]))
+        planted += len(g.get("discrepancies", []))
+        found += min(len(hits), len(g.get("discrepancies", [])))
+        false_alarms += max(0, len(hits) - len(g.get("discrepancies", [])))
+
     n = len(status_pairs)
     facts = {scope: {ft: _prf(v["tp"], v["pred"], v["gold"]) for ft, v in per.items()} for scope, per in counts.items()}
     for scope, per in counts.items():
@@ -86,6 +98,7 @@ def evaluate(method_label: str | None = None, write: bool = True) -> dict:
         "status_accuracy": round(sum(e == p for e, p, _ in status_pairs) / n, 3) if n else 0.0,
         "confusion": dict(Counter(f"{e} -> {p}" for e, p, _ in status_pairs)),
         "false_qualifications": [x for e, p, x in status_pairs if p == "qualified" and e != "qualified"],
+        "inconsistencies": {"planted": planted, "found": found, "false_alarms": false_alarms},
         "missed": [{"claimant": x, "expected": e, "got": p} for e, p, x in status_pairs if e != p],
         "llm_usage": {"calls": calls, "input_tokens": int(tin), "output_tokens": int(tout),
                       "avg_latency_s": round(float(avg_ms) / 1000, 2),

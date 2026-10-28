@@ -96,6 +96,11 @@
   "not_qualified -> needs_review": 1
  },
  "false_qualifications": [],
+ "inconsistencies": {
+  "planted": 6,
+  "found": 6,
+  "false_alarms": 0
+ },
  "missed": [
   {
    "claimant": "CC-1015",
@@ -104,14 +109,14 @@
   }
  ],
  "llm_usage": {
-  "calls": 58,
-  "input_tokens": 35168,
-  "output_tokens": 4109,
-  "avg_latency_s": 3.4,
-  "seconds_per_claimant": 8.2,
+  "calls": 45,
+  "input_tokens": 25415,
+  "output_tokens": 3757,
+  "avg_latency_s": 3.65,
+  "seconds_per_claimant": 6.8,
   "actual_cost_usd": 0.0,
-  "reference_cost_usd": 0.0077,
-  "reference_cost_per_claimant_usd": 0.00032,
+  "reference_cost_usd": 0.0061,
+  "reference_cost_per_claimant_usd": 0.00025,
   "reference_price": "paid API reference: $0.15/$0.6 per 1M tokens in/out"
  }
 }

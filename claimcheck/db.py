@@ -11,12 +11,14 @@ Entity overview:
 """
 from __future__ import annotations
 
+import hashlib
+import json
 from contextlib import contextmanager
 from datetime import date, datetime, timezone
 from functools import lru_cache
 
 from sqlalchemy import (JSON, Boolean, Date, DateTime, Float, ForeignKey, Integer, String, Text, create_engine, event,
-                        text)
+                        select, text)
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship, sessionmaker
 from sqlalchemy.types import TypeDecorator
 
@@ -176,6 +178,7 @@ class AuditLog(Base):
     entity: Mapped[str] = mapped_column(String(40))
     entity_id: Mapped[str | None] = mapped_column(String(40))
     detail: Mapped[dict] = mapped_column(JSON, default=dict)
+    hash: Mapped[str | None] = mapped_column(String(64))      # sha256(previous hash + this entry): tamper-evident chain
 
 
 class LLMCall(Base):
@@ -253,7 +256,31 @@ def session_scope():
         s.close()
 
 
+def _entry_hash(prev: str | None, ts: datetime, actor, role, action, entity, entity_id, detail) -> str:
+    payload = json.dumps([prev or "", ts.isoformat(), actor, role, action, entity, entity_id, detail],
+                         sort_keys=True, default=str)
+    return hashlib.sha256(payload.encode()).hexdigest()
+
+
 def audit(s, actor: str, role: str, action: str, entity: str, entity_id=None, **detail) -> None:
-    """Append-only audit trail: every write by a person, the agent or the system goes through here."""
-    s.add(AuditLog(actor=actor, role=role, action=action, entity=entity,
-                   entity_id=None if entity_id is None else str(entity_id), detail=detail))
+    """Append-only audit trail: every write by a person, the agent or the system goes through here.
+    Each entry's hash covers the previous entry's hash, so editing or deleting any past entry breaks the chain."""
+    detail = json.loads(json.dumps(detail, default=str))
+    eid = None if entity_id is None else str(entity_id)
+    ts = utcnow()
+    prev = s.scalar(select(AuditLog.hash).order_by(AuditLog.id.desc()).limit(1))
+    s.add(AuditLog(ts=ts, actor=actor, role=role, action=action, entity=entity, entity_id=eid, detail=detail,
+                   hash=_entry_hash(prev, ts, actor, role, action, entity, eid, detail)))
+    s.flush()
+
+
+def verify_audit_chain() -> tuple[bool, int, int | None]:
+    """(intact, entries checked, id of the first broken entry)."""
+    prev, n = None, 0
+    with session_scope() as s:
+        for a in s.scalars(select(AuditLog).order_by(AuditLog.id)):
+            n += 1
+            if a.hash != _entry_hash(prev, a.ts, a.actor, a.role, a.action, a.entity, a.entity_id, a.detail):
+                return False, n, a.id
+            prev = a.hash
+    return True, n, None

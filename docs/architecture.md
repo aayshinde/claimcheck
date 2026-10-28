@@ -55,9 +55,18 @@ skipped by using one interface instead of the other.
   `claimed_condition`), plus `quote`, `verified`, `match_score`, `method`, and a review status with who and when.
 - `rule_results` stores the explanation and the fact ids behind each criterion, so the UI can show "why" with a link
   to the exact page.
-- `audit_log` is append-only and records each ingestion, extraction, review, decision (with override flag and note),
+- `audit_log` is append-only and hash-chained (each entry's SHA-256 covers the previous entry), so any edit or
+  deletion of history is detectable (`verify_audit_chain()`, shown on the Behind the scenes page). It records each ingestion, extraction, review, decision (with override flag and note),
   agent tool call, CMS sync and webhook.
 - `llm_calls` records tokens, latency and cost for every model call. It feeds the cost panel and would feed budget alerts.
+
+## Case-team insights (`insights.py`)
+
+- **Inconsistencies:** the firm's intake form is parsed with a fixed template and compared with *trusted* facts only.
+  A mismatch is a flag for a person, never an automatic rejection.
+- **Missing records:** derived from the criteria left "unknown", so the records team gets one list for all claimants.
+- **Valuation:** a settlement grid in the case YAML (points by illness × exposure-length multiplier, tiers, dollars per
+  point). The demo grid is fictional; the point is that the same verified facts feed valuation and reporting.
 
 ## Security and privacy
 

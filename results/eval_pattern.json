@@ -97,6 +97,11 @@
   "qualified -> qualified": 2
  },
  "false_qualifications": [],
+ "inconsistencies": {
+  "planted": 6,
+  "found": 3,
+  "false_alarms": 0
+ },
  "missed": [
   {
    "claimant": "CC-1000",

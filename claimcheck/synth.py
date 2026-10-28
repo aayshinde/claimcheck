@@ -76,6 +76,7 @@ class GoldClaimant:
     scenario: str
     expected_status: str
     facts: list[dict] = field(default_factory=list)     # {fact_type, file, page, ...typed fields}
+    discrepancies: list[str] = field(default_factory=list)   # planted intake-vs-records mismatches: years|condition
 
 
 # ------------------------------------------------------------------------------------------------ date phrasing
@@ -166,13 +167,26 @@ def build_claimant(i: int, scenario: str, fake: Faker, rng: random.Random, out_d
     else:
         dx_date = rand_date(rng, max(exp_end, date(2008, 1, 1)), date(2024, 6, 1))
 
+    # Clients misremember. A separate random stream plants some intake-vs-records mismatches without changing anything
+    # else in the dataset. Only where both records exist, so the mismatch is detectable.
+    drng = random.Random(10_000 + i)
+    claimed_years, claimed_dx = (exp_start.year, exp_end.year), dx[0]
+    if scenario in ("qualified", "qualified_scanned", "dx_before_exposure") and drng.random() < 0.5:
+        if drng.random() < 0.6:
+            shift = drng.choice([-6, -5, -4, 4, 5, 6])
+            claimed_years = (exp_start.year + shift, exp_end.year + shift)
+            g.discrepancies.append("years")
+        else:
+            claimed_dx = drng.choice([q for q in QUALIFYING if q[0] != dx[0]])[0]
+            g.discrepancies.append("condition")
+
     # 1) intake questionnaire (self-report; never proof)
     write_pdf(folder / "01_intake_questionnaire.pdf", "Claimant Intake Questionnaire",
               "Cedar Creek Litigation Intake Team — completed by claimant", [
                   f"Full name: {name}", f"Date of birth: {fmt(dob, rng)}",
                   f"Cedar Creek address(es): {street}, Cedar Creek Township",
-                  f"Approximate years in Cedar Creek: {exp_start.year}–{exp_end.year}",
-                  f"Condition claimed: {dx[0]}", f"Approximate year of diagnosis: {dx_date.year}",
+                  f"Approximate years in Cedar Creek: {claimed_years[0]}–{claimed_years[1]}",
+                  f"Condition claimed: {claimed_dx}", f"Approximate year of diagnosis: {dx_date.year}",
                   "I certify the above is true to the best of my knowledge.",
               ])
 

@@ -15,7 +15,7 @@ import plotly.graph_objects as go
 import pymupdf
 import streamlit as st
 
-from claimcheck import config, evaluate, llm, plain, rules, search, service
+from claimcheck import config, evaluate, insights, llm, plain, rules, search, service
 from claimcheck.db import init_db
 from claimcheck.ingest import doc_path
 
@@ -74,6 +74,20 @@ def show_evidence(fact: dict, key: str) -> None:
     st.image(png, use_container_width=True)
 
 
+def card_extras(d: dict, key: str) -> None:
+    """Inconsistencies, settlement tier and the one-page PDF, shown under a claimant's checks."""
+    for x in insights.discrepancies(d):
+        st.warning(f"🔎 **The client's story doesn't match the records.** {x['what']}: the client says "
+                   f"**{x['client_says']}**, the records say **{x['records_say']}**. Worth a call before filing, "
+                   "since the other side will notice too.")
+    if v := insights.valuation(d, case):
+        st.markdown(f"💼 **Settlement tier:** {v['tier']} · {v['points']} points · est. ${v['value']:,} "
+                    f"<small>(fictional demo grid: {v['base']} base points × {v['factor']} for {v['years']} years "
+                    "of exposure)</small>", unsafe_allow_html=True)
+    st.download_button("⬇️ Download one-page summary (PDF)", insights.summary_pdf(d, case),
+                       file_name=f"ClaimCheck_{d['external_id']}.pdf", mime="application/pdf", key=f"pdf{key}")
+
+
 # ------------------------------------------------------------------------------------------------ sidebar
 SIMPLE = ["Overview", "Claimants"]
 TECHNICAL = ["Claimant details (technical)", "Accuracy & cost", "Behind the scenes"]
@@ -91,6 +105,7 @@ if "nav" not in st.session_state:
     st.session_state["tech"] = st.session_state["nav"] in TECHNICAL
     if "claimant" in qp:
         st.session_state["claimant_ext"] = qp["claimant"]
+        st.session_state["_deeplink"] = True
 
 with st.sidebar:
     st.markdown("## ⚖️ ClaimCheck")
@@ -106,6 +121,17 @@ with st.sidebar:
     case = rules.load_case(config.DEFAULT_CASE)
     st.caption(f"**Case:** {case['name']}")
     st.caption("All people and records are made up. No real patient data.")
+    if config.DATABASE_URL == f"sqlite:///{config.DATA_DIR / 'claimcheck.db'}" and \
+            (config.ROOT / "demo_bundle" / "claimcheck.db").exists():
+        if st.button("↺ Reset demo", help="Undo every click and restore the original demo data"):
+            from claimcheck import bundle
+            from claimcheck.db import get_engine
+            get_engine().dispose()
+            bundle.restore()
+            st.cache_data.clear()
+            for k in ("grp", "claimant_ext"):
+                st.session_state.pop(k, None)
+            st.rerun()
     if tech:
         st.caption(f"**Live LLM:** {config.CHAT_MODEL if llm.llm_enabled() else 'off (offline mode)'} · "
                    f"**Dataset extracted with:** {service.extraction_provenance()} · "
@@ -113,6 +139,9 @@ with st.sidebar:
 
 summary = service.claimant_summary()
 by_ext = {c["external_id"]: c for c in summary}
+if st.session_state.pop("_deeplink", False) and st.session_state.get("claimant_ext") in by_ext:
+    _c = by_ext[st.session_state["claimant_ext"]]       # open the deep-linked claimant's group
+    st.session_state["grp"] = "signed" if _c["decision"] else _c["status"]
 
 
 def pick_claimant() -> dict:
@@ -142,6 +171,7 @@ if page == "Overview":
     m[3].metric("❌ Don't qualify", n_n)
     res = {r["method"]: r for r in evaluate.load_results()}
     best = res.get("hybrid") or next(iter(res.values()), None)
+    details = [service.claimant_detail(c["id"]) for c in summary]
     if best:
         st.success(f"🛡️ **{len(best['false_qualifications'])} claimants wrongly approved** in testing "
                    f"({best['status_accuracy']:.0%} of files sorted correctly). When it isn't sure, it hands the file "
@@ -157,10 +187,13 @@ if page == "Overview":
     secs = (best or {}).get("llm_usage", {}).get("seconds_per_claimant") or 10
     t = st.columns(3)
     t[0].metric(f"By hand, these {len(summary)} files", f"{len(summary) * minutes / 60:.0f} hours")
-    t[1].metric("With ClaimCheck", f"~{max(1, round(len(summary) * secs / 60))} min",
-                help="Computer time, plus a short human check of the flagged files")
+    human = 5 * (n_r + sum(1 for d in details if insights.discrepancies(d)))
+    t[1].metric("With ClaimCheck", f"~{max(1, round(len(summary) * secs / 60 + human))} min",
+                help=f"About {max(1, round(len(summary) * secs / 60))} min of computer time, plus 5 minutes of a "
+                     "person's time for every flagged or inconsistent file")
     t[2].metric("At 5,000 claimants", f"{5000 * minutes / 60:,.0f} hours",
                 help="Paralegal hours a manual first pass would take; people then focus only on the flagged files")
+    st.caption("These are estimates. The first thing I'd do at a firm is time real files with the paralegals.")
 
     st.subheader("How it works")
     steps = st.columns(4)
@@ -173,6 +206,15 @@ if page == "Overview":
         with col.container(border=True):
             st.markdown(f"**{title}**")
             st.caption(text)
+    with st.expander("📜 The case rules, in plain English (set by the attorneys, changeable without a programmer)"):
+        ex_ = case["exposure"]
+        illnesses = ", ".join(sorted(set(case["diagnosis"]["qualifying"].values())))
+        st.markdown(f"A claimant qualifies when **all four** are true:\n"
+                    f"1. Records (not just the client's word) show they lived or worked in Cedar Creek between "
+                    f"**{ex_['window_start']:%Y} and {ex_['window_end']:%Y}**\n"
+                    f"2. For at least **{ex_['min_days']} days**\n"
+                    f"3. A doctor's record confirms one of: **{illnesses}**\n"
+                    f"4. The diagnosis came **after** the exposure began")
 
     st.subheader("See one claimant file")
     exts = list(by_ext)
@@ -187,18 +229,52 @@ if page == "Overview":
             if row["proof_fact"]:
                 with st.expander(f"📄 See the proof: {row['proof_label']}"):
                     show_evidence(row["proof_fact"], f"ov{i}")
+        card_extras(d, "ov")
         st.info(f"**Next step:** {ex['next_step']}")
 
-    nr = [c for c in summary if c["status"] == "needs_review"]
-    if nr:
-        st.subheader(f"⚠️ What needs a person right now ({len(nr)})")
-        for c in nr:
-            dd = service.claimant_detail(c["id"])
+    st.subheader("What needs attention")
+    col_a, col_b = st.columns(2, gap="large")
+    with col_a:
+        nr = [d for d in details if d["status"] == "needs_review" and not d["decision"]]
+        st.markdown(f"**⚠️ Needs a person ({len(nr)})**")
+        for dd in nr:
             ee = plain.explain(dd, case)
             issue = next((r["sentence"] for r in ee["rows"] if r["icon"] != "✅"), dd["reason"])
-            c1, c2 = st.columns([5, 1])
-            c1.markdown(f"**{dd['name']}**: {issue}  \n➡️ {ee['next_step']}")
-            c2.button("Open file →", key=f"open{c['id']}", on_click=open_claimant, args=(c["external_id"], "needs_review"))
+            st.markdown(f"**{dd['name']}**: {issue}  \n➡️ {ee['next_step']}")
+            st.button("Open file →", key=f"open{dd['id']}", on_click=open_claimant,
+                      args=(dd["external_id"], "needs_review"))
+    with col_b:
+        mism = [(dd, insights.discrepancies(dd)) for dd in details]
+        mism = [(dd, xs) for dd, xs in mism if xs]
+        st.markdown(f"**🔎 Client's story doesn't match the records ({len(mism)})**")
+        if not mism:
+            st.caption("None found.")
+        for dd, xs in mism:
+            x = xs[0]
+            st.markdown(f"**{dd['name']}**: {x['what']}? Client says {x['client_says']}, "
+                        f"records say {x['records_say']}")
+            grp = "signed" if dd["decision"] else dd["status"]
+            st.button("Open file →", key=f"mis{dd['id']}", on_click=open_claimant, args=(dd["external_id"], grp))
+        missing = pd.Series([m for dd in details for m in insights.deficiencies(dd)]).value_counts()
+        if len(missing):
+            st.markdown("**📋 Still missing across all claimants**")
+            for item, n in missing.items():
+                st.markdown(f"- {item}: **{n}**")
+
+    st.subheader("💼 For firm leadership and funders")
+    vals = [v for dd in details if (v := insights.valuation(dd, case))]
+    if vals:
+        tiers = pd.Series([v["tier"] for v in vals]).value_counts().sort_index()
+        k = st.columns(len(tiers) + 1)
+        k[0].metric("Estimated value of qualified claims", f"${sum(v['value'] for v in vals):,}",
+                    help="Fictional settlement grid for this demo. Real grids come from the settlement agreement.")
+        for col, (tier, n) in zip(k[1:], tiers.items()):
+            col.metric(tier, f"{n} claimants")
+        st.caption("Uses a fictional settlement grid (points by illness × years of exposure). It shows how the same "
+                   "verified facts feed valuation and reporting.")
+    census = pd.DataFrame(insights.census_rows(details, case))
+    st.download_button("⬇️ Download all claimants as a spreadsheet (CSV)", census.to_csv(index=False).encode(),
+                       file_name="claimcheck_claimants.csv", mime="text/csv")
 
 # ------------------------------------------------------------------------------------------------ claimants
 elif page == "Claimants":
@@ -237,6 +313,7 @@ elif page == "Claimants":
                 if row["proof_fact"]:
                     with st.expander(f"📄 See the proof: {row['proof_label']}"):
                         show_evidence(row["proof_fact"], f"cl{i}")
+        card_extras(d, "cl")
 
         st.markdown("#### What to do")
         todo = False
@@ -526,6 +603,11 @@ elif page == "Behind the scenes":
                                 "Attorney decision (in CMS)": m["attorney_decision"] or "—"} for m in matters]),
                  hide_index=True, use_container_width=True, height=240)
     st.subheader("Audit log")
+    from claimcheck.db import verify_audit_chain
+    ok, n_entries, bad = verify_audit_chain()
+    (st.success if ok else st.error)(
+        f"🔒 Audit log integrity: {'intact' if ok else f'BROKEN at entry {bad}'} ({n_entries} entries checked). "
+        "Each entry is fingerprinted together with the one before it, so editing or deleting history is detectable.")
     if role != "attorney":
         st.caption("🔒 The full audit log is visible to attorneys only.")
     else:

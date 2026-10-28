@@ -29,9 +29,11 @@ sends anything uncertain to a paralegal, and drafts the follow-up work. Attorney
 | **Extraction (LLM)** | Hybrid: a free pattern extractor reads known layouts, and a local LLM (Ollama, `qwen2.5:3b`) reads the pages it can't. Any OpenAI-compatible API works too. |
 | **Verification** | Every fact must quote the record. Code checks that the quote is really on the cited page **and** that the dates, ICD-10 codes and amounts are in that quote. Unverified facts never count as proof. |
 | **Criteria engine** | Deterministic rules from `cases/cedar_creek.yaml` decide *qualified / not qualified / needs review*, and link each criterion to its evidence. The LLM never decides. |
-| **Case Review Agent** | Tool-calling agent: searches the file, flags facts to check, finds gaps in treatment, and **drafts** records requests. It can't change a status or send anything. Offline planner when no LLM is available. |
+| **Case Review Agent** | Tool-calling agent: searches the file, flags facts to check, finds gaps in treatment, and **drafts** records requests limited to an approved list of record types, with HIPAA authorization wording. It can't change a status or send anything. Offline planner when no LLM is available. |
 | **Human review** | Paralegals approve/reject facts. Attorneys sign off on claimants (overriding the system requires a written reason) and approve records requests. |
-| **Audit & governance** | Append-only audit log, role-based permissions, per-call LLM token/latency/cost logging, accuracy measured against ground truth. |
+| **Inconsistency detection** | Compares what the client said on the intake form with what the records show (dates in Cedar Creek, illness, diagnosis year) and flags mismatches before the other side finds them. |
+| **Case-team views** | Missing-records tracker across all claimants, settlement tier and value under the case's grid (the demo grid is fictional), one-page claimant summary PDF, and a claimant spreadsheet export for courts and funders. |
+| **Audit & governance** | Tamper-evident audit log (each entry hash-chained to the previous one), role-based permissions, per-call LLM token/latency/cost logging, accuracy measured against ground truth. |
 | **API & integrations** | FastAPI with OpenAPI docs, CMS pull/push client, HMAC-signed webhooks, folder intake. |
 | **Data** | PostgreSQL + pgvector (vectors in the same database as the facts) or SQLite for zero-setup runs. |
 
@@ -46,10 +48,11 @@ scored against ground truth by `claimcheck/evaluate.py`. Local model: `qwen2.5:3
 | False qualifications (the costly error) | 0 | **0** | 0 |
 | Verified-fact recall | 78.2% | **99.5%** | 67.0% |
 | Verified-fact precision | 100% | **100%** | 90.8%¹ |
-| LLM calls | 0 | **58** | 190 |
-| LLM time per claimant | 0 s | **8 s** | 51 s |
+| Intake-vs-records inconsistencies found | 3 of 6 | **6 of 6, 0 false alarms** | 5 of 6 |
+| LLM calls | 0 | **45** | 173 |
+| LLM time per claimant | 0 s | **7 s** | 42 s |
 | API cost | $0 | **$0 (local)** | $0 (local) |
-| Same tokens on a paid API² | — | **$0.0003 / claimant** | $0.0013 / claimant |
+| Same tokens on a paid API² | — | **$0.0003 / claimant** | $0.0012 / claimant |
 
 **How to read this:**
 - **Nothing is ever falsely qualified.** When a method can't read a record, the claimant goes to *needs review*.
@@ -110,6 +113,8 @@ claimcheck/
   ingest.py        PDF → pages (OCR fallback) → document type → chunks + embeddings
   extract.py       pattern / LLM / hybrid extraction, quote + value verification, evidence locator
   rules.py         case criteria engine (YAML) → pass / fail / unknown per criterion
+  insights.py      inconsistencies, missing records, settlement valuation, census export, summary PDF
+  plain.py         plain-English explanations for non-technical users
   agent.py         Case Review Agent: tools, guardrails, LLM and offline planners
   search.py        claimant-scoped retrieval (pgvector or numpy), chronology, treatment gaps, cited Q&A
   service.py       operations with role checks + audit (shared by API and dashboard)

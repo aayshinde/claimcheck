@@ -86,7 +86,8 @@
     "cpt": "99285",
     "amount": 2401.66
    }
-  ]
+  ],
+  "discrepancies": []
  },
  {
   "external_id": "CC-1001",
@@ -175,6 +176,9 @@
     "cpt": "99214",
     "amount": 178.61
    }
+  ],
+  "discrepancies": [
+   "condition"
   ]
  },
  {
@@ -264,7 +268,8 @@
     "cpt": "99204",
     "amount": 283.89
    }
-  ]
+  ],
+  "discrepancies": []
  },
  {
   "external_id": "CC-1003",
@@ -353,7 +358,8 @@
     "cpt": "74177",
     "amount": 1498.51
    }
-  ]
+  ],
+  "discrepancies": []
  },
  {
   "external_id": "CC-1004",
@@ -442,7 +448,8 @@
     "cpt": "99285",
     "amount": 2187.05
    }
-  ]
+  ],
+  "discrepancies": []
  },
  {
   "external_id": "CC-1005",
@@ -531,7 +538,8 @@
     "cpt": "99204",
     "amount": 321.05
    }
-  ]
+  ],
+  "discrepancies": []
  },
  {
   "external_id": "CC-1006",
@@ -588,6 +596,9 @@
     "cpt": "88307",
     "amount": 745.91
    }
+  ],
+  "discrepancies": [
+   "years"
   ]
  },
  {
@@ -669,7 +680,8 @@
     "cpt": "99214",
     "amount": 201.71
    }
-  ]
+  ],
+  "discrepancies": []
  },
  {
   "external_id": "CC-1008",
@@ -718,7 +730,8 @@
     "cpt": "99204",
     "amount": 330.25
    }
-  ]
+  ],
+  "discrepancies": []
  },
  {
   "external_id": "CC-1009",
@@ -791,6 +804,9 @@
     "cpt": "74177",
     "amount": 1429.9
    }
+  ],
+  "discrepancies": [
+   "years"
   ]
  },
  {
@@ -880,7 +896,8 @@
     "cpt": "88307",
     "amount": 736.48
    }
-  ]
+  ],
+  "discrepancies": []
  },
  {
   "external_id": "CC-1011",
@@ -953,6 +970,9 @@
     "cpt": "99214",
     "amount": 204.92
    }
+  ],
+  "discrepancies": [
+   "years"
   ]
  },
  {
@@ -1010,6 +1030,9 @@
     "cpt": "88307",
     "amount": 580.77
    }
+  ],
+  "discrepancies": [
+   "condition"
   ]
  },
  {
@@ -1099,7 +1122,8 @@
     "cpt": "99214",
     "amount": 217.11
    }
-  ]
+  ],
+  "discrepancies": []
  },
  {
   "external_id": "CC-1014",
@@ -1172,6 +1196,9 @@
     "cpt": "99214",
     "amount": 194.15
    }
+  ],
+  "discrepancies": [
+   "years"
   ]
  },
  {
@@ -1261,7 +1288,8 @@
     "cpt": "88307",
     "amount": 626.09
    }
-  ]
+  ],
+  "discrepancies": []
  },
  {
   "external_id": "CC-1016",
@@ -1334,7 +1362,8 @@
     "cpt": "99204",
     "amount": 296.42
    }
-  ]
+  ],
+  "discrepancies": []
  },
  {
   "external_id": "CC-1017",
@@ -1423,7 +1452,8 @@
     "cpt": "99214",
     "amount": 201.56
    }
-  ]
+  ],
+  "discrepancies": []
  },
  {
   "external_id": "CC-1018",
@@ -1504,7 +1534,8 @@
     "cpt": "99285",
     "amount": 2675.84
    }
-  ]
+  ],
+  "discrepancies": []
  },
  {
   "external_id": "CC-1019",
@@ -1553,7 +1584,8 @@
     "cpt": "99204",
     "amount": 357.77
    }
-  ]
+  ],
+  "discrepancies": []
  },
  {
   "external_id": "CC-1020",
@@ -1642,7 +1674,8 @@
     "cpt": "99285",
     "amount": 2176.97
    }
-  ]
+  ],
+  "discrepancies": []
  },
  {
   "external_id": "CC-1021",
@@ -1715,7 +1748,8 @@
     "cpt": "88307",
     "amount": 724.43
    }
-  ]
+  ],
+  "discrepancies": []
  },
  {
   "external_id": "CC-1022",
@@ -1772,7 +1806,8 @@
     "cpt": "74177",
     "amount": 1542.57
    }
-  ]
+  ],
+  "discrepancies": []
  },
  {
   "external_id": "CC-1023",
@@ -1861,6 +1896,7 @@
     "cpt": "99214",
     "amount": 201.82
    }
-  ]
+  ],
+  "discrepancies": []
  }
 ]
